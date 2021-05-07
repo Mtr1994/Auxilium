@@ -94,6 +94,8 @@ void FileImportTool::import(std::string path, std::string name, bool copysystemd
         }
     }
     file.close();
+
+    remove(path.data());
 #endif
 
 #ifdef unix
@@ -171,6 +173,8 @@ void FileImportTool::import(std::string path, std::string name, bool copysystemd
     }
 
     file.close();
+
+    remove(path.data());
 #endif
 
     func("依赖库收集完成");
