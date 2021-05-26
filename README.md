@@ -13,6 +13,6 @@ a sample tool for collect most of the depend dll for the executable file
 * `Windows` 系统下默认不附带 `C:/Windows/System32` 目录中的动态库
 * `Linux` 系统下默认不附带 `/lib/x86_64-linux-gnu/` 目录中的动态库
 * `Linux` 系统下，打包后要修改 `/etc/ld.so.conf` 来添加动态库检索目录
-* 程序无法收集配置文件、qrc以外的资源等，需要手动拷贝
+* 程序无法收集配置文件、资源文件等非库文件，需要手动拷贝
 * 由于动态库只有在使用的时候才会被加载，运行时请尽量使用到程序中的功能
-* 同平台移植的时候，非必要不加载系统库
+* 同平台移植的时候，非必要不打包系统库
