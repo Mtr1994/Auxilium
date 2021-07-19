@@ -37,3 +37,5 @@ RESOURCES += \
     res.qrc
 
 RC_ICONS = icon.ico
+
+win32: LIBS += -lversion
