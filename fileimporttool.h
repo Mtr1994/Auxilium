@@ -17,8 +17,9 @@ public:
     static void import(std::string path, std::string name, bool copysystemdll, std::function<void(const std::string& msg)> func);
 
 public:
+#ifdef Q_OS_WINDOWS
     static std::string getFileDescription(LPCWSTR path);
-
+#endif
 };
 
 #endif // FILEIMPORTTOOL_H

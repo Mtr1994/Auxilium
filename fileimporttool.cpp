@@ -195,6 +195,7 @@ void FileImportTool::import(std::string path, std::string name, bool copysystemd
     func("依赖库收集完成");
 }
 
+#ifdef Q_OS_WINDOWS
 // 函数参考网址：https://www.cnblogs.com/yzhuang/p/13754332.html
 
 std::string FileImportTool::getFileDescription(LPCWSTR path)
@@ -230,3 +231,5 @@ std::string FileImportTool::getFileDescription(LPCWSTR path)
 
     return description;
 }
+
+#endif
