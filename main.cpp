@@ -1,7 +1,6 @@
 ﻿#include "mainwindow.h"
 
 #include <QApplication>
-#include <QFile>
 
 int main(int argc, char *argv[])
 {
@@ -10,10 +9,7 @@ int main(int argc, char *argv[])
     w.show();
 
     // 加载样式
-    QFile qss(":/style/style.qss");
-    qss.open(QFile::ReadOnly);
-    qApp->setStyleSheet(qss.readAll());
-    qss.close();
+    qApp->setStyleSheet("file:///:/style/style.qss");
 
     return a.exec();
 }

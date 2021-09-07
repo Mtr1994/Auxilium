@@ -122,11 +122,12 @@ void FileImportTool::import(std::string path, std::string name, bool copysystemd
         QString line = QString::fromStdString(str);
         QStringList list = line.split(' ');
         if (list.length() != 3) continue;
-        if (list.at(0) != "Library" || list.at(2) != "loaded.\r") continue;
+        if (list.at(0) != "Library" || list.at(2) != "loaded.") continue;
         if (list.at(1).indexOf('/') < 0) continue;
 
         QStringList libs = list.at(1).split('/');
         QString libName = libs.last();
+
 
         QString newPath = QString::fromStdString(path) + "/";
         // Qt 的库

@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
 
-QMAKE_CXXFLAGS += -execution-charset:utf-8
+win32: QMAKE_CXXFLAGS += -execution-charset:utf-8
 
 unix: QMAKE_LFLAGS += -no-pie
 
