@@ -71,6 +71,8 @@ void MainWindow::finish(const std::string& msg)
 
 void MainWindow::slot_Pack_clicked()
 {
+    ui->statusbar->showMessage("正在检索依赖项...", -1);
+
     QString path = ui->tbFileName->text();
     QFile file(path);
     if (!file.exists())
@@ -141,6 +143,7 @@ void MainWindow::slot_copy_library()
     QString data = mProcessExec.readAllStandardOutput();
 
 #ifdef unix
+    ui->statusbar->showMessage("开始拷贝依赖项...", -1);
     QStringList output = data.replace('\n', ' ').replace('\t', ' ').split(' ', Qt::SkipEmptyParts);
 
     uint64_t len = output.length();
@@ -237,6 +240,7 @@ void MainWindow::slot_thread_search_finish(const QStringList &list)
 #ifdef Q_OS_WINDOWS
 void MainWindow::search(const QStringList &listDir, const QStringList &listDll)
 {
+    ui->statusbar->showMessage("开始拷贝依赖项...", -1);
     QStringList listMessage;
     bool searchFlag = false;
 
