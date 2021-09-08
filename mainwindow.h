@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <QProcess>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +19,9 @@ public:
 
     void init();
 
+signals:
+    void sgl_thread_search_finish(const QStringList& list);
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -25,15 +29,29 @@ private:
     void finish(const std::string& msg);
 
 private slots:
-    void on_btnPack_clicked();
+    void slot_Pack_clicked();
 
-    void on_btnSelect_clicked();
+    void slot_Select_clicked();
 
-    void on_btnManual_clicked();
+    void slot_Manual_clicked();
 
-    void on_btnReaded_clicked();
+    void slot_Readed_clicked();
+
+    void slot_copy_library();
+
+    void slot_thread_search_finish(const QStringList& list);
+
+private:
+    void search(const QStringList &listDir, const QStringList &listDll);
 
 private:
     Ui::MainWindow *ui;
+
+    // 可执行文件的绝对路径
+    QString mExecPath;
+
+    // 用于执行 dumpbin 程序
+    QProcess mProcessExec;
+
 };
 #endif // MAINWINDOW_H

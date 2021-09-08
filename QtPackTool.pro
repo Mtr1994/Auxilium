@@ -17,12 +17,10 @@ VERSION = 21.3.31.173
 DESTDIR = ../bin
 
 SOURCES += \
-    fileimporttool.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    fileimporttool.h \
     mainwindow.h
 
 FORMS += \

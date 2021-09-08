@@ -83,17 +83,10 @@ QStatusBar
     color: #666666;
 }
 
-/* QCheckBox */
-QCheckBox {
-    color: #666666;
-}
-
-QCheckBox::indicator {
+/* QTextEdit */
+QTextEdit {
     border: 1px solid #dddddd;
-    border-radius: 0.1em;
-}
-
-QCheckBox::indicator:checked {
-    border: none;
-    border-image: url(:/image/checkbox_checked.png);
+    border-radius: 0.64em;
+    padding: 1em;
+    color: #666666;
 }
