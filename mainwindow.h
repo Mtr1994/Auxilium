@@ -20,7 +20,13 @@ public:
     void init();
 
 signals:
+#ifdef Q_OS_WINDOWS
     void sgl_thread_search_finish(const QStringList& list);
+#endif
+
+#ifdef unix
+    void sgl_search_finish(const QStringList& list);
+#endif
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -42,7 +48,9 @@ private slots:
     void slot_thread_search_finish(const QStringList& list);
 
 private:
+#ifdef Q_OS_WINDOWS
     void search(const QStringList &listDir, const QStringList &listDll);
+#endif
 
 private:
     Ui::MainWindow *ui;

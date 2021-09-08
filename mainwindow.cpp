@@ -40,7 +40,13 @@ void MainWindow::init()
     resize(width, height);
 
     connect(&mProcessExec, &QProcess::readyReadStandardOutput, this, &MainWindow::slot_copy_library);
+#ifdef Q_OS_WINDOWS
     connect(this, &MainWindow::sgl_thread_search_finish, this, &MainWindow::slot_thread_search_finish, Qt::QueuedConnection);
+#endif
+
+#ifdef unix
+    connect(this, &MainWindow::sgl_search_finish, this, &MainWindow::slot_thread_search_finish);
+#endif
 
     connect(ui->btnPack, &QPushButton::clicked, this, &MainWindow::slot_Pack_clicked);
     connect(ui->btnSelect, &QPushButton::clicked, this, &MainWindow::slot_Select_clicked);
@@ -48,6 +54,9 @@ void MainWindow::init()
     connect(ui->btnReaded, &QPushButton::clicked, this, &MainWindow::slot_Readed_clicked);
 
     ui->widgetManual->setVisible(false);
+
+    // test
+    ui->tbFileName->setText("/home/mtr/Project/QtPackTool/bin/QtPackTool");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -75,6 +84,14 @@ void MainWindow::slot_Pack_clicked()
     QFileInfo info(path);
     mExecPath = info.absoluteDir().absolutePath();
 
+#ifdef unix
+    // 系统工具调用
+    QString cmd1 = "ldd";
+    QStringList para1 = {path};
+    mProcessExec.start(cmd1, para1);
+#endif
+
+#ifdef Q_OS_WINDOWS
     QString currentPath = QApplication::applicationDirPath();
 
     // 官方工具调用
@@ -88,12 +105,20 @@ void MainWindow::slot_Pack_clicked()
     QStringList para2 = {"/DEPENDENTS", path};
 
     mProcessExec.start(cmd2, para2);
+#endif
 }
 
 void MainWindow::slot_Select_clicked()
 {
     QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+
+#ifdef Q_OS_WINDOWS
     QString path = QFileDialog::getOpenFileName(this, "选择可执行文件", desktop, "可执行文件 (*.exe)");
+#endif
+
+#ifdef unix
+    QString path = QFileDialog::getOpenFileName(this, "选择可执行文件", desktop);
+#endif
     if (path.isEmpty()) return;
 
     ui->tbFileName->setText(path);
@@ -114,6 +139,34 @@ void MainWindow::slot_Readed_clicked()
 void MainWindow::slot_copy_library()
 {
     QString data = mProcessExec.readAllStandardOutput();
+
+#ifdef unix
+    QStringList output = data.replace('\n', ' ').replace('\t', ' ').split(' ', Qt::SkipEmptyParts);
+
+    uint64_t len = output.length();
+    QStringList listMessage;
+    for (uint64_t i = 0; i < len - 2; i++)
+    {
+        if (output.at(i).contains(".so")) // is library
+        {
+            if (output.at(i + 1) == "=>") // has path
+            {
+                if (output.at(i + 2).contains(".so")) // what i need
+                {
+                    QString path = output.at(i + 2);
+                    bool status = QFile::copy(path, QString("%1/%2").arg(mExecPath, output.at(i)));
+                    if (status) listMessage.append("0" + path);
+                    else listMessage.append("1" + path);
+                }
+            }
+        }
+    }
+
+    emit sgl_search_finish(listMessage);
+#endif
+
+#ifdef Q_OS_WINDOWS
+
     if (!data.contains("Image has the following dependencies")) return;
     string output = data.remove("\r\n").toStdString();
 
@@ -139,6 +192,7 @@ void MainWindow::slot_copy_library()
     auto func = std::bind(&MainWindow::search, this, std::placeholders::_1, std::placeholders::_2);
     std::thread th(func, systemPathList, listLibrary);
     th.detach();
+#endif
 }
 
 void MainWindow::slot_thread_search_finish(const QStringList &list)
@@ -180,6 +234,7 @@ void MainWindow::slot_thread_search_finish(const QStringList &list)
     }
 }
 
+#ifdef Q_OS_WINDOWS
 void MainWindow::search(const QStringList &listDir, const QStringList &listDll)
 {
     QStringList listMessage;
@@ -216,3 +271,4 @@ void MainWindow::search(const QStringList &listDir, const QStringList &listDll)
 
     emit sgl_thread_search_finish(listMessage);
 }
+#endif
