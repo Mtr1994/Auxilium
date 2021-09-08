@@ -54,9 +54,6 @@ void MainWindow::init()
     connect(ui->btnReaded, &QPushButton::clicked, this, &MainWindow::slot_Readed_clicked);
 
     ui->widgetManual->setVisible(false);
-
-    // test
-    ui->tbFileName->setText("/home/mtr/Project/QtPackTool/bin/QtPackTool");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -150,11 +147,17 @@ void MainWindow::slot_copy_library()
     QStringList listMessage;
     for (uint64_t i = 0; i < len - 2; i++)
     {
-        if (output.at(i).contains(".so")) // is library
+        if (output.at(i).contains(".so")) // this is a library
         {
+            if (QFile::exists(QString("%1/%2").arg(mExecPath, output.at(i))))
+            {
+                listMessage.append("3" + output.at(i));
+                continue;
+            }
+
             if (output.at(i + 1) == "=>") // has path
             {
-                if (output.at(i + 2).contains(".so")) // what i need
+                if (output.at(i + 2).contains(".so")) // what i need, the path of library
                 {
                     QString path = output.at(i + 2);
                     bool status = QFile::copy(path, QString("%1/%2").arg(mExecPath, output.at(i)));
