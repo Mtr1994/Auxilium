@@ -74,7 +74,7 @@ void MainWindow::slot_Pack_clicked()
     QFile file(path);
     if (!file.exists())
     {
-        ui->statusbar->showMessage("文件不存在");
+        ui->statusbar->showMessage("可执行文件不存在");
         return;
     }
 
