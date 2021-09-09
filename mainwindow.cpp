@@ -47,8 +47,6 @@ void MainWindow::init()
     connect(&mDependentsWalker, &DependentsWalker::sgl_thread_parse_message, this, &MainWindow::slot_thread_parse_message, Qt::QueuedConnection);
 
     ui->widgetManual->setVisible(false);
-
-    ui->tbFileName->setText("/home/mtr/Desktop/Pack/PositionServer");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
