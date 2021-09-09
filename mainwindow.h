@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QProcess>
+#include <QStringList>
+
+#include "Public/dependentswalker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,9 +23,6 @@ public:
     void init();
 
 signals:
-#ifdef Q_OS_WINDOWS
-    void sgl_thread_search_finish(const QStringList& list);
-#endif
 
 #ifdef unix
     void sgl_search_finish(const QStringList& list);
@@ -43,23 +43,13 @@ private slots:
 
     void slot_Readed_clicked();
 
-    void slot_copy_library();
-
-    void slot_thread_search_finish(const QStringList& list);
-
-private:
-#ifdef Q_OS_WINDOWS
-    void search(const QStringList &listDir, const QStringList &listDll);
-#endif
+    void slot_thread_parse_message(const QString& title, const QString& msg);
 
 private:
     Ui::MainWindow *ui;
 
-    // 可执行文件的绝对路径
-    QString mExecPath;
-
-    // 用于执行 dumpbin 程序
-    QProcess mProcessExec;
+    // 工具类
+    DependentsWalker mDependentsWalker;
 
 };
 #endif // MAINWINDOW_H

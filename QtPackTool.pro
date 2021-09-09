@@ -17,10 +17,12 @@ VERSION = 21.3.31.173
 DESTDIR = ../bin
 
 SOURCES += \
+    Public/dependentswalker.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    Public/dependentswalker.h \
     mainwindow.h
 
 FORMS += \
