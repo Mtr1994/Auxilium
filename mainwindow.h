@@ -22,12 +22,6 @@ public:
 
     void init();
 
-signals:
-
-#ifdef unix
-    void sgl_search_finish(const QStringList& list);
-#endif
-
 protected:
     void closeEvent(QCloseEvent *event) override;
 

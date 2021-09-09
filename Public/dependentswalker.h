@@ -27,6 +27,10 @@ private:
     static std::string getFileDescription(LPCWSTR path);
 #endif
 
+#ifdef unix
+    void ldd(const QString &path);
+#endif
+
     void collectDependents(const QString &data);
 
 private:

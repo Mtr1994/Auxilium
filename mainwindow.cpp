@@ -39,10 +39,6 @@ void MainWindow::init()
 
     resize(width, height);
 
-#ifdef unix
-    connect(this, &MainWindow::sgl_search_finish, this, &MainWindow::slot_thread_search_finish);
-#endif
-
     connect(ui->btnPack, &QPushButton::clicked, this, &MainWindow::slot_Pack_clicked);
     connect(ui->btnSelect, &QPushButton::clicked, this, &MainWindow::slot_Select_clicked);
     connect(ui->btnManual, &QPushButton::clicked, this, &MainWindow::slot_Manual_clicked);
@@ -51,6 +47,8 @@ void MainWindow::init()
     connect(&mDependentsWalker, &DependentsWalker::sgl_thread_parse_message, this, &MainWindow::slot_thread_parse_message, Qt::QueuedConnection);
 
     ui->widgetManual->setVisible(false);
+
+    ui->tbFileName->setText("/home/mtr/Desktop/Pack/PositionServer");
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -79,12 +77,14 @@ void MainWindow::slot_Pack_clicked()
 
     QString currentPath = QApplication::applicationDirPath();
 
+#ifdef Q_OS_WINDOWS
     // 官方工具调用
     QProcess deployProcess;
     QString cmd1 = currentPath + "/../tools/windeployqt.exe";
     QStringList para1 = {"--no-translations", "--verbose", "0", path};
 
     deployProcess.startDetached(cmd1, para1);
+#endif
 
     mDependentsWalker.parse(path);
 }
@@ -92,7 +92,6 @@ void MainWindow::slot_Pack_clicked()
 void MainWindow::slot_Select_clicked()
 {
     QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-
 #ifdef Q_OS_WINDOWS
     QString path = QFileDialog::getOpenFileName(this, "选择可执行文件", desktop, "可执行文件 (*.exe)");
 #endif

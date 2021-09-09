@@ -20,10 +20,95 @@ DependentsWalker::DependentsWalker(QObject *parent) : QObject(parent)
 
 void DependentsWalker::parse(const QString &path)
 {
+#ifdef Q_OS_WINDOWS
     auto func = std::bind(&DependentsWalker::dumpbin, this, path);
     std::thread th(func);
     th.detach();
+#endif
+
+#ifdef unix
+    auto func = std::bind(&DependentsWalker::ldd, this, path);
+    std::thread th(func);
+    th.detach();
+#endif
 }
+
+#ifdef unix
+void DependentsWalker::ldd(const QString &path)
+{
+    QProcess *process = new QProcess;
+    connect(process, &QProcess::readyReadStandardOutput, process, [this, &process]
+    {
+        QString data = process->readAllStandardOutput();
+
+        if (!data.contains("=>"))
+        {
+            mDumpbinFlag = true;
+            mReachRoot = true;
+            mCV.notify_one();
+            return;
+        }
+
+        collectDependents(data);
+    });
+
+    QString cmd = "ldd";
+    while (true)
+    {
+        std::unique_lock<std::mutex> lock(mMutex);
+        mCV.wait(lock, [this]{return mDumpbinFlag;});
+        mDumpbinFlag = false;
+
+        QStringList para = {path};
+        if (mDependentsIndex < mListPath.size())
+        {
+            para[0] = mListPath.at(mDependentsIndex);
+            mDependentsIndex++;
+        }
+        else if (mReachRoot && (mDependentsIndex >= mListPath.size()))
+        {
+            break;
+        }
+
+        emit sgl_thread_parse_message("msg", QString("正在检索第 %1 项依赖").arg(QString::number(mDependentsIndex)));
+
+        process->start(cmd, para);
+        process->waitForFinished(10000);
+    }
+
+    // 开始i文件拷贝
+    int64_t size = mListPath.size();
+    QFileInfo infoOrigin(path);
+
+    for (int64_t i = 0; i < size; i++)
+    {
+        QFileInfo info(mListPath.at(i));
+
+        if (QFile::exists(QString("%1/%2").arg(infoOrigin.absolutePath(), info.fileName())))
+        {
+            mListMessage.append("3" + mListPath.at(i));
+            continue;
+        }
+
+#ifdef Q_OS_WINDOWS
+        //获取产品版本，如果使操作系统的库，不进行拷贝
+        QString productName = DependentsWalker::getFileDescription(mListPath.at(i).toStdWString().data()).data();
+        if (productName.contains("Operating System")) continue;
+#endif
+        bool status = QFile::copy(mListPath.at(i), QString("%1/%2").arg(infoOrigin.absolutePath(), info.fileName()));
+        if (status)
+        {
+            mListMessage.append("0" + mListPath.at(i));
+        }
+        else
+        {
+            mListMessage.append("1" + mListPath.at(i));
+        }
+    }
+
+    emit sgl_thread_parse_message("info", mListMessage.join("\r\n"));
+}
+#endif
 
 #ifdef Q_OS_WINDOWS
 void DependentsWalker::dumpbin(const QString &path)
@@ -106,8 +191,8 @@ void DependentsWalker::dumpbin(const QString &path)
 void DependentsWalker::collectDependents(const QString& data)
 {
 #ifdef unix
-    ui->statusbar->showMessage("开始拷贝依赖项...", -1);
-    QStringList output = data.replace('\n', ' ').replace('\t', ' ').split(' ', Qt::SkipEmptyParts);
+    QString tmpData = data;
+    QStringList output = tmpData.replace('\n', ' ').replace('\t', ' ').split(' ', Qt::SkipEmptyParts);
 
     uint64_t len = output.length();
     QStringList listMessage;
@@ -115,7 +200,10 @@ void DependentsWalker::collectDependents(const QString& data)
     {
         if (output.at(i).contains(".so")) // this is a library
         {
-            if (QFile::exists(QString("%1/%2").arg(mExecPath, output.at(i))))
+            if (mListLibrary.contains(output.at(i))) continue;
+            mListLibrary.append(output.at(i));
+
+            if (QFile::exists(output.at(i)))
             {
                 listMessage.append("3" + output.at(i));
                 continue;
@@ -126,15 +214,15 @@ void DependentsWalker::collectDependents(const QString& data)
                 if (output.at(i + 2).contains(".so")) // what i need, the path of library
                 {
                     QString path = output.at(i + 2);
-                    bool status = QFile::copy(path, QString("%1/%2").arg(mExecPath, output.at(i)));
-                    if (status) listMessage.append("0" + path);
-                    else listMessage.append("1" + path);
+                    mListPath.append(path);
+                    mReachRoot = false;
                 }
             }
         }
     }
 
-    emit sgl_search_finish(listMessage);
+    mDumpbinFlag = true;
+    mCV.notify_one();
 #endif
 
 #ifdef Q_OS_WINDOWS
