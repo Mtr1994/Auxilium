@@ -130,7 +130,7 @@ void DependentsWalker::dumpbin(const QString &path)
     });
 
     QString currentPath = QCoreApplication::applicationDirPath();
-    QString cmd = currentPath + "/../tools/dumpbin/dumpbin.exe";
+    QString cmd = currentPath + "/tools/dumpbin/dumpbin.exe";
 
     while (true)
     {

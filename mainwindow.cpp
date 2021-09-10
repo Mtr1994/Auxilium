@@ -157,6 +157,7 @@ void MainWindow::slot_thread_parse_message(const QString &title, const QString &
     }
     else
     {
+        ui->statusbar->setStyleSheet("color: #888888;");
         ui->statusbar->showMessage(msg);
     }
 }
