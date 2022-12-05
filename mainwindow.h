@@ -1,12 +1,12 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QProcess>
-#include <QStringList>
+#include "Packer/windowspacker.h"
 
-#include "Public/dependentswalker.h"
+#include <QMainWindow>
+#include <QMouseEvent>
+#include <QTimer>
+#include <QMovie>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,27 +23,29 @@ public:
     void init();
 
 protected:
-    void closeEvent(QCloseEvent *event) override;
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
 
-private:
-    void finish(const std::string& msg);
+    void slot_btn_select_exec_click();
+
+    void slot_btn_widget_pack_click();
+
+    void slot_btn_quick_pack_click();
+
+    void slot_btn_setting_click();
 
 private slots:
-    void slot_Pack_clicked();
-
-    void slot_Select_clicked();
-
-    void slot_Manual_clicked();
-
-    void slot_Readed_clicked();
-
-    void slot_thread_parse_message(const QString& title, const QString& msg);
+    void slot_system_logger_message(const QString &msg, const QString &color = "");
 
 private:
     Ui::MainWindow *ui;
 
-    // 工具类
-    DependentsWalker mDependentsWalker;
+    QPointF mLastMousePosition;
+    bool mMousePressed = false;
+
+    // Windows 打包对象
+    WindowsPacker mWindowsPacker;
 
 };
 #endif // MAINWINDOW_H

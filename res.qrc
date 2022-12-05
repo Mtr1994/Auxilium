@@ -1,7 +1,14 @@
 <RCC>
     <qresource prefix="/">
-        <file>style/style.qss</file>
-        <file>image/checkbox_checked.png</file>
-        <file>image/icon.png</file>
+        <file>Resource/icon/icon.ico</file>
+        <file>Resource/qss/style.qss</file>
+        <file>Resource/image/combobox_down.png</file>
+        <file>Resource/image/setting.svg</file>
+        <file>Resource/icon/logo.png</file>
+        <file>Resource/image/error.svg</file>
+        <file>Resource/image/info.svg</file>
+        <file>Resource/image/success.svg</file>
+        <file>Resource/image/data.svg</file>
+        <file>Resource/image/up_stream_on.gif</file>
     </qresource>
 </RCC>

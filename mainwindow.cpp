@@ -1,18 +1,12 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "Public/appsignal.h"
+#include "Dialog/dialogsetting.h"
 
-#include <thread>
-#include <QFile>
+#include <QDir>
+#include <QDateTime>
 #include <QFileDialog>
-#include <QScreen>
-#include <QFileInfo>
 #include <QStandardPaths>
-#include <regex>
-
-using namespace std;
-
-//test
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     init();
 
-    setWindowTitle("程序打包工具 (QT 开发者专用)");
+    setWindowTitle("Qt Pack Tool");
 }
 
 MainWindow::~MainWindow()
@@ -32,132 +26,81 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    QRect rect = QGuiApplication::screens().at(0)->availableGeometry();
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    setAttribute(Qt::WA_TranslucentBackground);
 
-    float width = rect.width() * 0.1 < 960 ? 960 : rect.width() * 0.1;
-    float height = rect.width() * 0.1 < 640 ? 640 : rect.width() * 0.1;
+    ui->btnMin->setID(ButtonDesigned::Button_Min);
+    ui->btnClose->setID(ButtonDesigned::Button_Close);
 
-    resize(width, height);
+    connect(ui->btnMin, &QPushButton::clicked, this, [this]{ showMinimized(); });
+    connect(ui->btnClose, &QPushButton::clicked, this, [this] { this->close(); });
 
-    connect(ui->btnPack, &QPushButton::clicked, this, &MainWindow::slot_Pack_clicked);
-    connect(ui->btnSelect, &QPushButton::clicked, this, &MainWindow::slot_Select_clicked);
-    connect(ui->btnManual, &QPushButton::clicked, this, &MainWindow::slot_Manual_clicked);
-    connect(ui->btnReaded, &QPushButton::clicked, this, &MainWindow::slot_Readed_clicked);
+    connect(ui->btnSelectDir, &QPushButton::clicked, this, &MainWindow::slot_btn_select_exec_click);
+    connect(ui->btnWidgetPack, &QPushButton::clicked, this, &MainWindow::slot_btn_widget_pack_click);
+    connect(ui->btnQuickPack, &QPushButton::clicked, this, &MainWindow::slot_btn_quick_pack_click);
+    connect(ui->btnSystemSet, &QPushButton::clicked, this, &MainWindow::slot_btn_setting_click);
 
-    connect(&mDependentsWalker, &DependentsWalker::sgl_thread_parse_message, this, &MainWindow::slot_thread_parse_message, Qt::QueuedConnection);
-
-    ui->widgetManual->setVisible(false);
+    connect(AppSignal::getInstance(), &AppSignal::sgl_system_logger_message, this, &MainWindow::slot_system_logger_message);
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event);
-}
-
-void MainWindow::finish(const std::string& msg)
-{
-    ui->statusbar->showMessage(msg.data());
-}
-
-void MainWindow::slot_Pack_clicked()
-{
-    ui->statusbar->showMessage("正在检索依赖项...", -1);
-
-    QString path = ui->tbFileName->text();
-    QFile file(path);
-    if (!file.exists())
+    if (event->pos().x() > ui->widgetTitle->width() + ui->widgetTitle->x() || event->pos().y() > ui->widgetTitle->height() + ui->widgetTitle->y()) return;
+    if (event->button() == Qt::LeftButton)
     {
-        ui->statusbar->showMessage("可执行文件不存在");
-        return;
+        mLastMousePosition = event->globalPos();
+        mMousePressed = true;
     }
-
-    ui->statusbar->clearMessage();
-
-    QString currentPath = QApplication::applicationDirPath();
-
-#ifdef Q_OS_WINDOWS
-    // 官方工具调用
-    QProcess deployProcess;
-    QString cmd1 = currentPath + "/../tools/windeployqt.exe";
-    QStringList para1 = {"--no-translations", "--verbose", "0", path};
-
-    deployProcess.startDetached(cmd1, para1);
-#endif
-
-    mDependentsWalker.parse(path);
 }
 
-void MainWindow::slot_Select_clicked()
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    QString desktop = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
-#ifdef Q_OS_WINDOWS
-    QString path = QFileDialog::getOpenFileName(this, "选择可执行文件", desktop, "可执行文件 (*.exe)");
-#endif
-
-#ifdef unix
-    QString path = QFileDialog::getOpenFileName(this, "选择可执行文件", desktop);
-#endif
-    if (path.isEmpty()) return;
-
-    ui->tbFileName->setText(path);
+    mMousePressed = false;
+    event->accept();
 }
 
-void MainWindow::slot_Manual_clicked()
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    ui->widget->setVisible(false);
-    ui->widgetManual->setVisible(true);
+    if (!mMousePressed) return;
+    if (!event->buttons().testFlag(Qt::LeftButton)) return;
+    const QPointF position = pos() + event->globalPos() - mLastMousePosition; //the position of mainfrmae + (current_mouse_position - last_mouse_position)
+    move(position.x(), position.y());
+    mLastMousePosition = event->globalPos();
 }
 
-void MainWindow::slot_Readed_clicked()
+void MainWindow::slot_btn_select_exec_click()
 {
-    ui->widgetManual->setVisible(false);
-    ui->widget->setVisible(true);
+    QString desk = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+    QString dir = QFileDialog::getOpenFileName(this, tr("选择文件夹"), desk, "可执行文件 (*.exe)");
+    if (dir.isEmpty()) return;
+
+    ui->tbRootDir->setText(dir);
 }
 
-void MainWindow::slot_thread_parse_message(const QString &title, const QString &msg)
+// 启动 Widget 程序打包线程
+void MainWindow::slot_btn_widget_pack_click()
 {
-    if (title == "info")
+    mWindowsPacker.pack(ui->tbRootDir->text());
+}
+
+// 启动 Quick 程序打包线程
+void MainWindow::slot_btn_quick_pack_click()
+{
+
+}
+
+void MainWindow::slot_btn_setting_click()
+{
+    DialogSetting dialog(this);
+    dialog.exec();
+}
+
+void MainWindow::slot_system_logger_message(const QString &msg, const QString &color)
+{
+    QString styleMessage = msg;
+    if (!color.isEmpty())
     {
-        ui->textMessage->clear();
-        int missingCount = 0;
-        QStringList list = msg.split("\r\n");
-        for (auto& info : list)
-        {
-            QString msg = info.midRef(1, -1).toString();
-            if (info.startsWith("0"))
-            {
-                ui->textMessage->append("<font color='green'>" + msg + "    拷贝完成");
-            }
-            else if (info.startsWith("1"))
-            {
-                missingCount++;
-                ui->textMessage->append("<font color='orange'>" + msg + "    拷贝失败");
-            }
-            else if (info.startsWith("3"))
-            {
-                ui->textMessage->append("<font color='green'>" + msg + "    已存在");
-            }
-            else
-            {
-                missingCount++;
-                ui->textMessage->append("<font color='red'>" + msg + "    未找到");
-            }
-        }
-
-        if(missingCount == 0)
-        {
-            ui->statusbar->setStyleSheet("color: green;");
-            ui->statusbar->showMessage("依赖库拷贝完成", 5000);
-        }
-        else
-        {
-            ui->statusbar->setStyleSheet("color: red;");
-            ui->statusbar->showMessage("依赖库拷贝完成，存在未找到依赖，请查看详细信息", 10000);
-        }
+        styleMessage = QString("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"color:%1\">%2</span>").arg(color, msg);
     }
-    else
-    {
-        ui->statusbar->setStyleSheet("color: #888888;");
-        ui->statusbar->showMessage(msg);
-    }
+    ui->tbLogs->append(QString("%1:      %2").arg(QDateTime::currentDateTime().toString("hh:mm:ss"), styleMessage));
 }

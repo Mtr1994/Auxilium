@@ -1,11 +1,6 @@
-# QtPackTool
-a sample tool for collect most of the depend dll for the executable file
+# `QtPackTool`
+此程序用于打包 `QWidget` 程序 和 `Quick` 程序，包括简易打包、完整打包两种模式，适用于 `Windows` 系统和 `Linux` 系统。
 
-## 步骤
-* 输入 可执行文件 的路径到输入框中
-* 点击 `开始打包` 按钮
-&nbsp;
-## 说明
+### 研发进度
 
-* 程序无法收集配置文件等非动态库文件，需要手动拷贝
-* 资源文件无需打包，已经转换为二进制并被储存到 `exe` 文件中
+- [x] 2022/12/05  配置窗口等待完成
