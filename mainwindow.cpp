@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QStandardPaths>
+#include <QListView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -36,11 +37,20 @@ void MainWindow::init()
     connect(ui->btnClose, &QPushButton::clicked, this, [this] { this->close(); });
 
     connect(ui->btnSelectDir, &QPushButton::clicked, this, &MainWindow::slot_btn_select_exec_click);
-    connect(ui->btnWidgetPack, &QPushButton::clicked, this, &MainWindow::slot_btn_widget_pack_click);
-    connect(ui->btnQuickPack, &QPushButton::clicked, this, &MainWindow::slot_btn_quick_pack_click);
     connect(ui->btnSystemSet, &QPushButton::clicked, this, &MainWindow::slot_btn_setting_click);
+    connect(ui->btnStartSearch, &QPushButton::clicked, this, &MainWindow::slot_btn_start_search_click);
 
     connect(AppSignal::getInstance(), &AppSignal::sgl_system_logger_message, this, &MainWindow::slot_system_logger_message);
+
+    ui->cbbSearchMode->addItem("简洁模式");
+    ui->cbbSearchMode->addItem("循环模式");
+    ui->cbbSearchMode->setView(new QListView());
+    ui->cbbSearchMode->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
+
+    ui->cbbClientType->addItem("Qt Widget");
+    ui->cbbClientType->addItem("Qt Quick");
+    ui->cbbClientType->setView(new QListView());
+    ui->cbbClientType->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -68,6 +78,14 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     mLastMousePosition = event->globalPos();
 }
 
+void MainWindow::slot_btn_start_search_click()
+{
+    bool isWidget = ui->cbbClientType->currentIndex() == 0;
+    bool isSimpleMode = ui->cbbSearchMode->currentIndex() == 0;
+
+    mWindowsPacker.pack(ui->tbRootDir->text().trimmed(), isWidget, isSimpleMode);
+}
+
 void MainWindow::slot_btn_select_exec_click()
 {
     QString desk = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
@@ -75,18 +93,6 @@ void MainWindow::slot_btn_select_exec_click()
     if (dir.isEmpty()) return;
 
     ui->tbRootDir->setText(dir);
-}
-
-// 启动 Widget 程序打包线程
-void MainWindow::slot_btn_widget_pack_click()
-{
-    mWindowsPacker.pack(ui->tbRootDir->text());
-}
-
-// 启动 Quick 程序打包线程
-void MainWindow::slot_btn_quick_pack_click()
-{
-
 }
 
 void MainWindow::slot_btn_setting_click()

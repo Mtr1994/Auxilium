@@ -10,7 +10,7 @@ class WindowsPacker : public QObject
 public:
     explicit WindowsPacker(QObject *parent = nullptr);
 
-    void pack(const QString &path);
+    void pack(const QString &path, bool isWidget, bool isSimpleMode);
 
 private:
     void threadPack(const QString &path);
@@ -21,6 +21,12 @@ private:
 
     // 线程锁
     std::mutex mMutex;
+
+    // 模式
+    bool mIsSimpleMode = true;
+
+    // 程序类型
+    bool mIsQtWidgetType = true;
 };
 
 #endif // WINDOWSPACKER_H

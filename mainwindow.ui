@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1196</width>
-    <height>749</height>
+    <width>835</width>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,10 +93,10 @@
              <string notr="true"/>
             </property>
             <layout class="QGridLayout" name="gridLayout_5">
-             <item row="0" column="0">
+             <item row="1" column="0">
               <widget class="QWidget" name="widgetContent" native="true">
                <layout class="QGridLayout" name="gridLayout_7">
-                <item row="1" column="0">
+                <item row="0" column="0">
                  <widget class="QTextEdit" name="tbLogs">
                   <property name="focusPolicy">
                    <enum>Qt::ClickFocus</enum>
@@ -112,23 +112,183 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
+               </layout>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QWidget" name="widgetSearch" native="true">
+               <property name="Background" stdset="0">
+                <bool>true</bool>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_9">
+                <item row="0" column="0">
                  <layout class="QHBoxLayout" name="horizontalLayout_2">
+                  <property name="spacing">
+                   <number>12</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>0</number>
+                  </property>
                   <item>
-                   <widget class="QLineEdit" name="tbRootDir">
-                    <property name="focusPolicy">
-                     <enum>Qt::ClickFocus</enum>
+                   <widget class="QWidget" name="widgetSearchModeBase" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
                     </property>
-                    <property name="text">
-                     <string>C:/Users/admin/Desktop/ISMIFFMonitor_Plus/ISMIFFMonitor_Plus.exe</string>
-                    </property>
-                    <property name="placeholderText">
-                     <string>输入或选择可执行文件路径</string>
-                    </property>
+                    <layout class="QGridLayout" name="gridLayout_11">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="horizontalSpacing">
+                      <number>0</number>
+                     </property>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_2">
+                       <property name="text">
+                        <string>模式</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="PrefixTitle" stdset="0">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QComboBox" name="cbbSearchMode"/>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="btnSelectDir">
+                   <widget class="QWidget" name="widgetClientType" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_10">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="horizontalSpacing">
+                      <number>0</number>
+                     </property>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label">
+                       <property name="text">
+                        <string>种类</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="PrefixTitle" stdset="0">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QComboBox" name="cbbClientType"/>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QWidget" name="widgetTargetBase" native="true">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <layout class="QGridLayout" name="gridLayout_12">
+                     <property name="leftMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="bottomMargin">
+                      <number>0</number>
+                     </property>
+                     <property name="horizontalSpacing">
+                      <number>0</number>
+                     </property>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label_3">
+                       <property name="text">
+                        <string>目标</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                       <property name="PrefixTitle" stdset="0">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QLineEdit" name="tbRootDir">
+                       <property name="focusPolicy">
+                        <enum>Qt::ClickFocus</enum>
+                       </property>
+                       <property name="text">
+                        <string>C:/Users/admin/Desktop/ISMIFFMonitor_Plus/ISMIFFMonitor_Plus.exe</string>
+                       </property>
+                       <property name="placeholderText">
+                        <string>输入或选择可执行文件路径</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="2">
+                      <widget class="QPushButton" name="btnSelectDir">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="text">
+                        <string>浏览</string>
+                       </property>
+                       <property name="Flat" stdset="0">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="btnStartSearch">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                       <horstretch>0</horstretch>
@@ -139,9 +299,9 @@
                      <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="text">
-                     <string>浏览</string>
+                     <string>开始</string>
                     </property>
-                    <property name="Cancel" stdset="0">
+                    <property name="Ok" stdset="0">
                      <bool>true</bool>
                     </property>
                    </widget>
@@ -260,23 +420,6 @@
              <property name="verticalSpacing">
               <number>24</number>
              </property>
-             <item row="8" column="0" colspan="2">
-              <widget class="QLabel" name="lbVersion">
-               <property name="text">
-                <string>V2.0.1 2022.12.03</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0" colspan="2">
-              <widget class="QPushButton" name="btnQuickPack">
-               <property name="text">
-                <string>Qt Quick Pack</string>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="0" colspan="2">
               <widget class="QLabel" name="lbLogo">
                <property name="sizePolicy">
@@ -296,23 +439,6 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0" colspan="2">
-              <widget class="QLabel" name="lbTitle">
-               <property name="text">
-                <string>Mtr1994</string>
-               </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0" colspan="2">
-              <widget class="QPushButton" name="btnWidgetPack">
-               <property name="text">
-                <string>Qt Widget Pack</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="0" colspan="2">
               <spacer name="verticalSpacer_2">
                <property name="orientation">
@@ -329,7 +455,7 @@
                </property>
               </spacer>
              </item>
-             <item row="6" column="0" colspan="2">
+             <item row="4" column="0" colspan="2">
               <spacer name="verticalSpacer">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -342,7 +468,17 @@
                </property>
               </spacer>
              </item>
-             <item row="7" column="0" colspan="2">
+             <item row="6" column="0" colspan="2">
+              <widget class="QLabel" name="lbVersion">
+               <property name="text">
+                <string>V2.0.1 2022.12.03</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0" colspan="2">
               <widget class="QWidget" name="widget" native="true">
                <property name="minimumSize">
                 <size>
@@ -391,6 +527,16 @@
                </layout>
               </widget>
              </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QLabel" name="lbTitle">
+               <property name="text">
+                <string>Mtr1994</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
             </layout>
            </widget>
           </item>
@@ -407,7 +553,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1196</width>
+     <width>835</width>
      <height>21</height>
     </rect>
    </property>

@@ -27,11 +27,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
 
+    void slot_btn_start_search_click();
+
     void slot_btn_select_exec_click();
-
-    void slot_btn_widget_pack_click();
-
-    void slot_btn_quick_pack_click();
 
     void slot_btn_setting_click();
 
