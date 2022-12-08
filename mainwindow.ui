@@ -97,7 +97,7 @@
               <widget class="QWidget" name="widgetContent" native="true">
                <layout class="QGridLayout" name="gridLayout_7">
                 <item row="0" column="0">
-                 <widget class="QTextEdit" name="tbLogs">
+                 <widget class="QTextBrowser" name="tbLogs">
                   <property name="focusPolicy">
                    <enum>Qt::ClickFocus</enum>
                   </property>

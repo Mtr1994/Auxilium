@@ -3,12 +3,12 @@
 
 #include <QDialog>
 #include <QMouseEvent>
+#include <QStandardItemModel>
 
 namespace Ui {
 class DialogSetting;
 }
 
-class QGraphicsDropShadowEffect;
 class DialogSetting : public QDialog
 {
     Q_OBJECT
@@ -24,14 +24,23 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
 
+private slots:
+    void slot_btn_cancel_click();
+
+    void slot_btn_ok_click();
+
+    void slot_btn_add_click();
+
+    void slot_btn_remove_click();
+
 private:
     Ui::DialogSetting *ui;
 
     QPointF mLastMousePosition;
     bool mMousePressed = false;
 
-    // 背景阴影
-    QGraphicsDropShadowEffect *mShadowEffect = nullptr;
+    // 模型
+    QStandardItemModel mModelPath;
 };
 
 #endif // DIALOGSETTING_H

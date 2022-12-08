@@ -10,5 +10,7 @@
         <file>Resource/image/success.svg</file>
         <file>Resource/image/data.svg</file>
         <file>Resource/image/up_stream_on.gif</file>
+        <file>Resource/image/add.svg</file>
+        <file>Resource/image/move.svg</file>
     </qresource>
 </RCC>

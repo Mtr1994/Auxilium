@@ -1,5 +1,6 @@
 ﻿#include "windowspacker.h"
 #include "Public/appsignal.h"
+#include "Public/appconfig.h"
 
 #include <thread>
 #include <QFile>
@@ -102,13 +103,14 @@ void WindowsPacker::threadPack(const QString &path)
 
     // 检索路径需要通过配置文件记录，使用者自己添加，所有环境变量检索的结果很离谱
     QStringList listSystemPath;
-    listSystemPath.append("C:/Qt/5.15.2/msvc2019_64/bin");
-    // 默认加一个当前文件夹
+    // 默认先加一个当前文件夹
     listSystemPath.append(fileInfo.absolutePath());
-    listSystemPath.append("C:/Windows/System32");
-    listSystemPath.append("C:/Windows/SysWoW64");
-    listSystemPath.append("C:/Users/admin/Project/VTK-9.1.0/install/bin");
-    listSystemPath.append("C:/Users/admin/Project/XYZ2STL/Sdk/GDAL3_3_0");
+    QStringList list = AppConfig::getInstance()->getValue("SearchPath", "value").split(";");
+    for (auto &item : list)
+    {
+        if (!QDir(item.trimmed()).exists()) continue;
+        listSystemPath.append(item.trimmed());
+    }
 
     uint32_t length = 1024 * 10;
     char *buffer = new char[length];

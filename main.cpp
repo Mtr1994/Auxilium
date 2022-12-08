@@ -1,4 +1,5 @@
 ﻿#include "mainwindow.h"
+#include "Public/appconfig.h"
 
 #include <QApplication>
 #include <QScreen>
@@ -6,6 +7,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // 初始化配置文件
+    AppConfig::getInstance()->init();
 
     // 加载样式
     qApp->setStyleSheet("file:///:/Resource/qss/style.qss");

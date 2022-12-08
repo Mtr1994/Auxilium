@@ -1,7 +1,9 @@
 ﻿#include "dialogsetting.h"
 #include "ui_dialogsetting.h"
+#include "Public/appconfig.h"
 
-#include <QGraphicsEffect>
+// test
+#include <QDebug>
 
 DialogSetting::DialogSetting(QWidget *parent) :
     QDialog(parent),
@@ -14,7 +16,6 @@ DialogSetting::DialogSetting(QWidget *parent) :
 
 DialogSetting::~DialogSetting()
 {
-    delete mShadowEffect;
     delete ui;
 }
 
@@ -31,11 +32,22 @@ void DialogSetting::init()
     connect(ui->btnMin, &QPushButton::clicked, this, [this]{ showMinimized(); });
     connect(ui->btnClose, &QPushButton::clicked, this, [this] { close(); });
 
-    mShadowEffect = new QGraphicsDropShadowEffect(this);
-    mShadowEffect->setOffset(0, 0);
-    mShadowEffect->setColor(QColor(128, 128, 128));
-    mShadowEffect->setBlurRadius(9);
-    setGraphicsEffect(mShadowEffect);
+    connect(ui->btnCancel, &QPushButton::clicked, this, &DialogSetting::slot_btn_cancel_click);
+    connect(ui->btnOk, &QPushButton::clicked, this, &DialogSetting::slot_btn_ok_click);
+
+    connect(ui->btnAddItem, &QPushButton::clicked, this, &DialogSetting::slot_btn_add_click);
+    connect(ui->btnDelItem, &QPushButton::clicked, this, &DialogSetting::slot_btn_remove_click);
+
+    ui->lvTargetPath->setModel(&mModelPath);
+
+    // 读取配置文件
+    QStringList list = AppConfig::getInstance()->getValue("SearchPath", "value").split(";");
+    for (auto &item : list)
+    {
+        mModelPath.appendRow(new QStandardItem(item.trimmed()));
+    }
+    ui->lvTargetPath->setTextElideMode(Qt::ElideMiddle);
+    ui->lvTargetPath->setCurrentIndex(QModelIndex());
 }
 
 void DialogSetting::mousePressEvent(QMouseEvent *event)
@@ -62,4 +74,42 @@ void DialogSetting::mouseMoveEvent(QMouseEvent *event)
     const QPointF position = pos() + event->globalPos() - mLastMousePosition;
     move(position.x(), position.y());
     mLastMousePosition = event->globalPos();
+}
+
+void DialogSetting::slot_btn_cancel_click()
+{
+    done(0);
+}
+
+void DialogSetting::slot_btn_ok_click()
+{
+    // 保存配置文件
+    int size = mModelPath.rowCount();
+
+    QStringList listPaths;
+    for (int i = 0; i < size; i++)
+    {
+        QStandardItem *item = mModelPath.item(i, 0);
+        if (nullptr == item) continue;
+
+        if (listPaths.contains(item->text().trimmed())) continue;
+        listPaths.append(item->text().trimmed());
+    }
+
+    AppConfig::getInstance()->setValue("SearchPath", "value", listPaths.join(";"));
+    done(1);
+}
+
+void DialogSetting::slot_btn_add_click()
+{
+    mModelPath.appendRow(new QStandardItem("新建路径 （ 双击文本进行编辑操作 ）"));
+}
+
+void DialogSetting::slot_btn_remove_click()
+{
+    QModelIndex index = ui->lvTargetPath->currentIndex();
+    if (!index.isValid()) return;
+
+    mModelPath.removeRow(index.row());
+    ui->lvTargetPath->setCurrentIndex(QModelIndex());
 }

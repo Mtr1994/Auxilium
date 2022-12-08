@@ -38,6 +38,7 @@ SOURCES += \
     Dialog/dialogsetting.cpp \
     Packer/linuxpacker.cpp \
     Packer/windowspacker.cpp \
+    Public/appconfig.cpp \
     Public/appsignal.cpp \
     Widget/buttondesigned.cpp \
     main.cpp \
@@ -47,6 +48,7 @@ HEADERS += \
     Dialog/dialogsetting.h \
     Packer/linuxpacker.h \
     Packer/windowspacker.h \
+    Public/appconfig.h \
     Public/appsignal.h \
     Widget/buttondesigned.h \
     mainwindow.h
