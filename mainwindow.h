@@ -13,7 +13,6 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class QGraphicsDropShadowEffect;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -51,8 +50,5 @@ private:
 
     // Linux 打包对象
     LinuxPacker mLinuxPacker;
-
-    // 背景阴影
-    QGraphicsDropShadowEffect *mShadowEffect = nullptr;
 };
 #endif // MAINWINDOW_H
