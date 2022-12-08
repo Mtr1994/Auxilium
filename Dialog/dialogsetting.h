@@ -8,6 +8,7 @@ namespace Ui {
 class DialogSetting;
 }
 
+class QGraphicsDropShadowEffect;
 class DialogSetting : public QDialog
 {
     Q_OBJECT
@@ -28,6 +29,9 @@ private:
 
     QPointF mLastMousePosition;
     bool mMousePressed = false;
+
+    // 背景阴影
+    QGraphicsDropShadowEffect *mShadowEffect = nullptr;
 };
 
 #endif // DIALOGSETTING_H

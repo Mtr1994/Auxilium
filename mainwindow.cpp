@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QListView>
+#include <QGraphicsEffect>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -52,6 +53,12 @@ void MainWindow::init()
     ui->cbbClientType->addItem("Qt Quick");
     ui->cbbClientType->setView(new QListView());
     ui->cbbClientType->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
+
+    mShadowEffect = new QGraphicsDropShadowEffect(this);
+    mShadowEffect->setOffset(0, 0);
+    mShadowEffect->setColor(QColor("#aa295e9f"));
+    mShadowEffect->setBlurRadius(9);
+    setGraphicsEffect(mShadowEffect);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

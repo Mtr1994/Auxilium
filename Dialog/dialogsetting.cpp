@@ -14,6 +14,7 @@ DialogSetting::DialogSetting(QWidget *parent) :
 
 DialogSetting::~DialogSetting()
 {
+    delete mShadowEffect;
     delete ui;
 }
 
@@ -30,12 +31,11 @@ void DialogSetting::init()
     connect(ui->btnMin, &QPushButton::clicked, this, [this]{ showMinimized(); });
     connect(ui->btnClose, &QPushButton::clicked, this, [this] { close(); });
 
-    QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(this);
-    shadow->setOffset(0, 0);
-    shadow->setColor(QColor(96, 96, 96));
-    shadow->setBlurRadius(12);
-
-    setGraphicsEffect(shadow);
+    mShadowEffect = new QGraphicsDropShadowEffect(this);
+    mShadowEffect->setOffset(0, 0);
+    mShadowEffect->setColor(QColor(128, 128, 128));
+    mShadowEffect->setBlurRadius(9);
+    setGraphicsEffect(mShadowEffect);
 }
 
 void DialogSetting::mousePressEvent(QMouseEvent *event)
