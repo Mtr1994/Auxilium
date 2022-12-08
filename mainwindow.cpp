@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     init();
 
-    setWindowTitle("Qt Pack Tool");
+    setWindowTitle("Auxilium");
 }
 
 MainWindow::~MainWindow()
@@ -39,6 +39,7 @@ void MainWindow::init()
     connect(ui->btnSelectDir, &QPushButton::clicked, this, &MainWindow::slot_btn_select_exec_click);
     connect(ui->btnSystemSet, &QPushButton::clicked, this, &MainWindow::slot_btn_setting_click);
     connect(ui->btnStartSearch, &QPushButton::clicked, this, &MainWindow::slot_btn_start_search_click);
+    connect(ui->tbLogs, &QTextEdit::customContextMenuRequested, this, &MainWindow::slot_tb_logs_custom_context_menu_requested);
 
     connect(AppSignal::getInstance(), &AppSignal::sgl_system_logger_message, this, &MainWindow::slot_system_logger_message);
 
@@ -83,7 +84,11 @@ void MainWindow::slot_btn_start_search_click()
     bool isWidget = ui->cbbClientType->currentIndex() == 0;
     bool isSimpleMode = ui->cbbSearchMode->currentIndex() == 0;
 
+#ifdef Q_OS_LINUX
+    mLinuxPacker.pack(ui->tbRootDir->text().trimmed(), isWidget, isSimpleMode);
+#elif defined Q_OS_WINDOWS
     mWindowsPacker.pack(ui->tbRootDir->text().trimmed(), isWidget, isSimpleMode);
+#endif
 }
 
 void MainWindow::slot_btn_select_exec_click()
@@ -110,3 +115,22 @@ void MainWindow::slot_system_logger_message(const QString &msg, const QString &c
     }
     ui->tbLogs->append(QString("%1:      %2").arg(QDateTime::currentDateTime().toString("hh:mm:ss"), styleMessage));
 }
+
+void MainWindow::slot_tb_logs_custom_context_menu_requested(const QPoint &pos)
+{
+    Q_UNUSED(pos);
+    QMenu menu(this);
+    menu.setWindowFlags(Qt::NoDropShadowWindowHint | menu.windowFlags() | Qt::FramelessWindowHint);
+    menu.setAttribute(Qt::WA_TranslucentBackground);
+    QAction actionCopy("复制");
+    // 选中才能复制
+    connect(&actionCopy, &QAction::triggered, this, [this]() { ui->tbLogs->copy(); });
+    QAction actionClear("全部清理");
+    connect(&actionClear, &QAction::triggered, this, [this]() { ui->tbLogs->clear(); });
+
+    menu.addAction(&actionCopy);
+    menu.addAction(&actionClear);
+
+    menu.exec(QCursor::pos());
+}
+

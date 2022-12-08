@@ -107,6 +107,8 @@ void WindowsPacker::threadPack(const QString &path)
     listSystemPath.append(fileInfo.absolutePath());
     listSystemPath.append("C:/Windows/System32");
     listSystemPath.append("C:/Windows/SysWoW64");
+    listSystemPath.append("C:/Users/admin/Project/VTK-9.1.0/install/bin");
+    listSystemPath.append("C:/Users/admin/Project/XYZ2STL/Sdk/GDAL3_3_0");
 
     uint32_t length = 1024 * 10;
     char *buffer = new char[length];

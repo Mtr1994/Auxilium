@@ -2,6 +2,7 @@
 #define DIALOGSETTING_H
 
 #include <QDialog>
+#include <QMouseEvent>
 
 namespace Ui {
 class DialogSetting;
@@ -17,8 +18,16 @@ public:
 
     void init();
 
+protected:
+    void mousePressEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+
 private:
     Ui::DialogSetting *ui;
+
+    QPointF mLastMousePosition;
+    bool mMousePressed = false;
 };
 
 #endif // DIALOGSETTING_H

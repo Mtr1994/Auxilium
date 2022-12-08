@@ -102,7 +102,7 @@
                    <enum>Qt::ClickFocus</enum>
                   </property>
                   <property name="contextMenuPolicy">
-                   <enum>Qt::NoContextMenu</enum>
+                   <enum>Qt::CustomContextMenu</enum>
                   </property>
                   <property name="styleSheet">
                    <string notr="true"/>
@@ -258,7 +258,7 @@
                         <enum>Qt::ClickFocus</enum>
                        </property>
                        <property name="text">
-                        <string>C:/Users/admin/Desktop/ISMIFFMonitor_Plus/ISMIFFMonitor_Plus.exe</string>
+                        <string/>
                        </property>
                        <property name="placeholderText">
                         <string>输入或选择可执行文件路径</string>

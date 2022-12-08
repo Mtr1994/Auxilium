@@ -48,6 +48,17 @@ QWidget#widgetContentBase
     border-radius: 0.4em;
 }
 
+QWidget#widgetSettingTopBase
+{
+    background-color: #f0f0f0;
+    border: none;
+    border-right: 1px solid #d0d0d0;
+    border-bottom: 1px solid #d0d0d0;
+    border-left: 1px solid #d0d0d0;
+    border-bottom-left-radius: 0.4em;
+    border-bottom-right-radius: 0.4em;
+}
+
 QWidget#widgetTitle
 {
     background-color: #ffffff;
@@ -57,6 +68,15 @@ QWidget#widgetTitle
     border-bottom: 1px solid #d0d0d0;
     min-height: 2.0em;
     border-top-right-radius: 0.3em;
+}
+
+QWidget#widgetSettingTitle
+{
+    background-color: #ffffff;
+    border: 1px solid #d0d0d0;
+    min-height: 2.0em;
+    border-top-right-radius: 0.3em;
+    border-top-left-radius: 0.3em;
 }
 
 QWidget#widgetContent,#widgetSearch
@@ -70,6 +90,16 @@ QWidget#widgetClientType,#widgetSearchModeBase,#widgetTargetBase
     min-width: 9.6em;
     background-color: #fefefe;
     border: 1px solid #dcdfe6;
+    border-radius: 0.3em;
+}
+
+QWidget#widgetSettingBase
+{
+    background-color: transparent;
+}
+
+QWidget#widgetViewBase
+{
     border-radius: 0.3em;
 }
 
@@ -371,4 +401,27 @@ QLabel
 QLabel[PrefixTitle]
 {
     padding: 0em 1em;
+}
+
+/* QMenu */
+QMenu
+{
+    min-height: 8.4em;
+    background-color: #fefefe;
+    border: 1px solid #dcdfe6;
+    border-radius: 0.3em;
+}
+
+QMenu::item
+{
+    color: #333333;
+    background-color: transparent;
+    padding-left: 1em;
+    margin: 0.3em 1px;
+    min-width: 10em;
+    min-height: 2.4em;
+}
+
+QMenu::item:selected  {
+    background-color: #f2f3f5;
 }

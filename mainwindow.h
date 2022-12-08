@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "Packer/windowspacker.h"
+#include "Packer/linuxpacker.h"
 
 #include <QMainWindow>
 #include <QMouseEvent>
@@ -36,6 +37,8 @@ protected:
 private slots:
     void slot_system_logger_message(const QString &msg, const QString &color = "");
 
+    void slot_tb_logs_custom_context_menu_requested(const QPoint &pos);
+
 private:
     Ui::MainWindow *ui;
 
@@ -44,6 +47,9 @@ private:
 
     // Windows 打包对象
     WindowsPacker mWindowsPacker;
+
+    // Linux 打包对象
+    LinuxPacker mLinuxPacker;
 
 };
 #endif // MAINWINDOW_H
