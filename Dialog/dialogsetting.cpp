@@ -41,13 +41,15 @@ void DialogSetting::init()
     ui->lvTargetPath->setModel(&mModelPath);
 
     // 读取配置文件
-    QStringList list = AppConfig::getInstance()->getValue("SearchPath", "value").split(";");
+    QStringList list = AppConfig::getInstance()->getValue("SearchPath", "value").split(";", Qt::SkipEmptyParts);
     for (auto &item : list)
     {
         mModelPath.appendRow(new QStandardItem(item.trimmed()));
     }
     ui->lvTargetPath->setTextElideMode(Qt::ElideMiddle);
     ui->lvTargetPath->setCurrentIndex(QModelIndex());
+
+    // 由于没有了 Title，垂直居中缺了两个标题栏的高度
 }
 
 void DialogSetting::mousePressEvent(QMouseEvent *event)

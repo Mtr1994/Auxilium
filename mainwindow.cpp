@@ -104,6 +104,7 @@ void MainWindow::slot_btn_select_exec_click()
 void MainWindow::slot_btn_setting_click()
 {
     DialogSetting dialog(this);
+    dialog.setGeometry(this->x() + (this->width() - dialog.width()) * 0.5, this->y() + (this->height() - dialog.height()) * 0.5, dialog.width(), dialog.height());
     dialog.exec();
 }
 

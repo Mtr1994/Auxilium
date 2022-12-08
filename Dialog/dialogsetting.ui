@@ -21,16 +21,16 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <property name="spacing">
     <number>0</number>
@@ -259,7 +259,7 @@
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>* 动态库检索路径设置</string>
+              <string>* 动态库检索路径管理</string>
              </property>
             </widget>
            </item>

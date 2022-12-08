@@ -105,7 +105,7 @@ void WindowsPacker::threadPack(const QString &path)
     QStringList listSystemPath;
     // 默认先加一个当前文件夹
     listSystemPath.append(fileInfo.absolutePath());
-    QStringList list = AppConfig::getInstance()->getValue("SearchPath", "value").split(";");
+    QStringList list = AppConfig::getInstance()->getValue("SearchPath", "value").split(";", Qt::SkipEmptyParts);
     for (auto &item : list)
     {
         if (!QDir(item.trimmed()).exists()) continue;

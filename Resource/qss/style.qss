@@ -61,7 +61,7 @@ QWidget#widgetSettingTopBase
 
 QWidget#widgetTitle
 {
-    background-color: #ffffff;
+    background-color: #fefefe;
     border: none;
     border-top: 1px solid #d0d0d0;
     border-right: 1px solid #d0d0d0;
@@ -72,7 +72,7 @@ QWidget#widgetTitle
 
 QWidget#widgetSettingTitle
 {
-    background-color: #ffffff;
+    background-color: #fefefe;
     border: 1px solid #d0d0d0;
     min-height: 2.0em;
     border-top-right-radius: 0.3em;
