@@ -30,7 +30,8 @@
   2、默认的安装包安装在 `C 盘`后只能使用管理员权限运行，需要加入以下命令
   	[Dirs]
   	Name: {app}; Permissions: users-full
-  	* 可以放到 [Run] 字段上面
+  	
+  	可以放到 [Run] 字段上面
   ```
   
   
