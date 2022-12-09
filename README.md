@@ -17,3 +17,19 @@
 
 - [x] 2022/12/05  配置窗口等待完成
 - [x] 改名为 `Auxilium`，中文含义是 “辅助装置、打辅助的人”
+
+
+
+### 三、安装包制作注意事项
+
+* 使用 `Inno Setup` 制作安装包的注意事项
+
+  ```
+  1、如果主目录下有文件夹，通过导航加入文件夹后，需要手动修改该文件夹的 DestDir 属性；
+  	例子：Source: "C:\ISMIFFMonitor_Plus\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
+  2、默认的安装包安装在 `C 盘`后只能使用管理员权限运行，需要加入以下命令，可以放到 [Run] 字段上面
+  	[Dirs]
+  	Name: {app}; Permissions: users-full
+  ```
+
+  
