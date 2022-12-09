@@ -7,7 +7,6 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QTimer>
-#include <QMovie>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

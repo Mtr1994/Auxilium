@@ -274,10 +274,15 @@ QListView
 QListView::item
 {
     background-color: #fefefe;
-    min-height: 3.2em;
+    min-height: 1.8em;
     color: #666666;
     padding-left: 0.3em;
     border-radius: 0.3em;
+}
+
+QListView#lvTargetPath::item
+{
+    min-height: 3.2em;
 }
 
 QListView::item:hover
@@ -383,6 +388,11 @@ QLabel#lbTitle
 {
     font: 16pt "Microsoft Yahei";
     color: #fefefe;
+}
+
+QLabel#lbMonster
+{
+    image: url(:/Resource/image/monster.png);
 }
 
 /* QScrollBar */

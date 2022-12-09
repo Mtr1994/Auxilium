@@ -420,19 +420,26 @@
              <property name="verticalSpacing">
               <number>24</number>
              </property>
-             <item row="0" column="0" colspan="2">
-              <widget class="QLabel" name="lbLogo">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             <item row="4" column="0" colspan="2">
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
                </property>
-               <property name="styleSheet">
-                <string notr="true"/>
+               <property name="sizeType">
+                <enum>QSizePolicy::Expanding</enum>
                </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QLabel" name="lbTitle">
                <property name="text">
-                <string/>
+                <string>Mtr1994</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -455,30 +462,26 @@
                </property>
               </spacer>
              </item>
-             <item row="4" column="0" colspan="2">
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
+             <item row="0" column="0" colspan="2">
+              <widget class="QLabel" name="lbLogo">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
+               <property name="styleSheet">
+                <string notr="true"/>
                </property>
-              </spacer>
-             </item>
-             <item row="6" column="0" colspan="2">
-              <widget class="QLabel" name="lbVersion">
                <property name="text">
-                <string>V2.0.1 2022.12.03</string>
+                <string/>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
-             <item row="5" column="0" colspan="2">
+             <item row="7" column="0" colspan="2">
               <widget class="QWidget" name="widget" native="true">
                <property name="minimumSize">
                 <size>
@@ -527,15 +530,41 @@
                </layout>
               </widget>
              </item>
-             <item row="2" column="0" colspan="2">
-              <widget class="QLabel" name="lbTitle">
+             <item row="5" column="0" colspan="2">
+              <widget class="QLabel" name="lbMonster">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="text">
-                <string>Mtr1994</string>
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0" colspan="2">
+              <widget class="QLabel" name="lbVersion">
+               <property name="text">
+                <string>V2.0.1 2022.12.03</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
                </property>
               </widget>
+             </item>
+             <item row="6" column="0" colspan="2">
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
