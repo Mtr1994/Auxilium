@@ -26,10 +26,11 @@
 
   ```
   1、如果主目录下有文件夹，通过导航加入文件夹后，需要手动修改该文件夹的 DestDir 属性；
-  	例子：Source: "C:\ISMIFFMonitor_Plus\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion recursesubdirs createallsubdirs
-  2、默认的安装包安装在 `C 盘`后只能使用管理员权限运行，需要加入以下命令，可以放到 [Run] 字段上面
+  	例子：Source: "C:\ISMIFFMonitor_Plus\styles\*"; DestDir: "{app}\styles"; x...x...x
+  2、默认的安装包安装在 `C 盘`后只能使用管理员权限运行，需要加入以下命令
   	[Dirs]
   	Name: {app}; Permissions: users-full
+  	* 可以放到 [Run] 字段上面
   ```
-
+  
   
