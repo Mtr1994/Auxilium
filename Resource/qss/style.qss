@@ -85,7 +85,7 @@ QWidget#widgetContent,#widgetSearch
     border-radius: 0.3em;
 }
 
-QWidget#widgetClientType,#widgetSearchModeBase,#widgetTargetBase
+QWidget#widgetClientType,#widgetSearchModeBase,#widgetTargetBase,#widgetSourceBase
 {
     min-width: 9.6em;
     background-color: #fefefe;
@@ -223,7 +223,7 @@ QLineEdit
     color: #666666;
 }
 
-QLineEdit#tbRootDir
+QLineEdit#tbRootDir,#tbSourceDir
 {
     min-height: 1.8em;
     border: none;

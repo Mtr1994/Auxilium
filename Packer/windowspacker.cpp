@@ -26,7 +26,7 @@ WindowsPacker::WindowsPacker(QObject *parent)
 
 }
 
-void WindowsPacker::pack(const QString &path, bool isWidget, bool isSimpleMode)
+void WindowsPacker::pack(const QString &path, bool isWidget, bool isSimpleMode, const QString &sourceroot)
 {
     if (mThreadPacking)
     {
@@ -45,6 +45,7 @@ void WindowsPacker::pack(const QString &path, bool isWidget, bool isSimpleMode)
 
     mIsSimpleMode = isSimpleMode;
     mIsQtWidgetType = isWidget;
+    mSourceRoot = sourceroot;
 
     auto func = std::bind(&WindowsPacker::threadPack, this, path);
     std::thread th(func);
@@ -60,17 +61,45 @@ void WindowsPacker::threadPack(const QString &path)
 
     bool collectQtDependsFlag = false;
 
-    // 先运行系统的 windeployqt 程序，没有就提示找不到程序
     FILE *fp = nullptr;
     char buf[1024] = { 0 };
+    QString qmlDir;
 
     AllocConsole();
     ShowWindow(GetConsoleWindow(), SW_HIDE);
-    // 此处读取配置文件中 qml 文件夹的位置
-    fp = _popen(QString("windeployqt %1 %2 %3").arg(
+
+    if (!mIsQtWidgetType)
+    {
+        // 先查找 Qt 的 qml 模块位置，没有就提示找不到程序
+        fp = _popen(QString("where windeployqt").toStdString().data(), "r");
+
+        if (fp)
+        {
+            size_t ret = fread(buf, 1, sizeof(buf) - 1, fp);
+            if(ret > 0)
+            {
+                QTextCodec *codec = QTextCodec::codecForName("GBK");
+                QString message = QString::fromUtf8(codec->toUnicode(QByteArray(buf)).toUtf8());
+                qmlDir = QFileInfo(message.remove("\n")).absolutePath() + "/../qml";
+            }
+            else
+            {
+                emit AppSignal::getInstance()->sgl_system_logger_message("找不到 QML 模块位置，请先配置 Qt 环境变量", "#dd3737");
+            }
+            _pclose(fp);
+        }
+
+        if (qmlDir.isEmpty()) return;
+
+        // qml 程序需要解析源码，获取模块信息，耗时更多
+        emit AppSignal::getInstance()->sgl_system_logger_message("正在查找 QML 模块依赖，可能会持续一段时间，请等待", "#fc9153");
+    }
+
+    // qmldir 是程序源码的根目录，根据源码里面引入的内容，确定要打包哪些模块
+    // qmlimport 是 qml 系统模块的主目录
+    fp = _popen(QString("windeployqt %1 %2").arg(
                     fileInfo.absoluteFilePath(),
-                    QString(mIsQtWidgetType ? " " : "–qmldir").toStdString().data(),
-                    QString(mIsQtWidgetType ? " " : " ").toStdString().data()).toStdString().data(), "r");
+                    QString(mIsQtWidgetType ? " " : ("--qmldir " + mSourceRoot + " --qmlimport " + qmlDir))).toStdString().data(), "r");
     if(fp)
     {
         size_t ret = fread(buf, 1, sizeof(buf) - 1, fp);
@@ -78,12 +107,12 @@ void WindowsPacker::threadPack(const QString &path)
         {
             //QTextCodec *codec = QTextCodec::codecForName("GBK");
             //QString message = QString::fromUtf8(codec->toUnicode(QByteArray(buf)).toUtf8());
-            emit AppSignal::getInstance()->sgl_system_logger_message("基础依赖库打包完成", "#fc9153");
+            emit AppSignal::getInstance()->sgl_system_logger_message("基础 Qt 依赖库打包完成", "#fc9153");
             collectQtDependsFlag = true;
         }
         else
         {
-            emit AppSignal::getInstance()->sgl_system_logger_message("打包程序 【windeployqt】 不存在，请先配置其环境变量", "#dd3737");
+            emit AppSignal::getInstance()->sgl_system_logger_message("打包程序 【windeployqt】 执行失败，请检查 Qt 环境变量", "#dd3737");
         }
         _pclose(fp);
     }

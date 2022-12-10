@@ -33,6 +33,10 @@ protected:
 
     void slot_btn_setting_click();
 
+    void slot_current_type_change(const QString &name);
+
+    void slot_btn_select_source_dir_click();
+
 private slots:
     void slot_system_logger_message(const QString &msg, const QString &color = "");
 
