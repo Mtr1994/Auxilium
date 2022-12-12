@@ -2,6 +2,8 @@
 #include "ui_dialogsetting.h"
 #include "Public/appconfig.h"
 
+#include <QGraphicsDropShadowEffect>
+
 // test
 #include <QDebug>
 
@@ -48,6 +50,15 @@ void DialogSetting::init()
     }
     ui->lvTargetPath->setTextElideMode(Qt::ElideMiddle);
     ui->lvTargetPath->setCurrentIndex(QModelIndex());
+
+    // 这个阴影通过父子关系西东删除，不需要手动删除
+    QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect(ui->widgetSettingBase);
+    shadowEffect->setOffset(0, 2);
+    shadowEffect->setColor(QColor(214, 214, 214));
+    shadowEffect->setBlurRadius(12);
+    ui->widgetSettingBase->setGraphicsEffect(shadowEffect);
+
+    ui->widgetSettingBase->setAttribute(Qt::WA_TranslucentBackground);
 }
 
 void DialogSetting::mousePressEvent(QMouseEvent *event)
