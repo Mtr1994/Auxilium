@@ -48,8 +48,6 @@ void DialogSetting::init()
     }
     ui->lvTargetPath->setTextElideMode(Qt::ElideMiddle);
     ui->lvTargetPath->setCurrentIndex(QModelIndex());
-
-    // 由于没有了 Title，垂直居中缺了两个标题栏的高度
 }
 
 void DialogSetting::mousePressEvent(QMouseEvent *event)
