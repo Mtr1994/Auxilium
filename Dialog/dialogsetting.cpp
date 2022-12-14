@@ -118,9 +118,9 @@ void DialogSetting::slot_btn_add_click()
 
 void DialogSetting::slot_btn_remove_click()
 {
-    QModelIndex index = ui->lvTargetPath->currentIndex();
-    if (!index.isValid()) return;
+    if(!ui->lvTargetPath->selectionModel()->hasSelection()) return;
 
+    QModelIndex index = ui->lvTargetPath->currentIndex();
     mModelPath.removeRow(index.row());
     ui->lvTargetPath->setCurrentIndex(QModelIndex());
 }
