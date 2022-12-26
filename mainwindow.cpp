@@ -8,6 +8,7 @@
 #include <QFileDialog>
 #include <QStandardPaths>
 #include <QListView>
+#include <regex>
 
 // test
 #include <QDebug>
@@ -89,10 +90,20 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 
 void MainWindow::slot_btn_start_search_click()
 {
+    QString rootPath = ui->tbRootDir->text().trimmed();
     // 确认可执行程序是否存在
-    if (!QFile(ui->tbRootDir->text().trimmed()).exists())
+    if (!QFile(rootPath).exists())
     {
         emit AppSignal::getInstance()->sgl_system_logger_message("请选择有效的可执行文件路径", "#fc9153");
+        return;
+    }
+
+    std::string strReg = rootPath.toStdString();
+    std::regex reg("[\u4e00-\u9fa5]");
+    std::smatch match;
+    if(std::regex_search(strReg, match, reg))
+    {
+        emit AppSignal::getInstance()->sgl_system_logger_message("可执行文件路径中不能存在中文，请检查后重试", "#dd3737");
         return;
     }
 
@@ -101,8 +112,7 @@ void MainWindow::slot_btn_start_search_click()
     // qml 程序需要确认 源码位置是否存在
     if (!isWidget)
     {
-        QString sourceRoot = ui->tbSourceDir->text().trimmed();
-        if (sourceRoot.isEmpty() || !QDir(sourceRoot).exists())
+        if (rootPath.isEmpty() || !QDir(rootPath).exists())
         {
             emit AppSignal::getInstance()->sgl_system_logger_message("请选择有效的项目源码路径", "#fc9153");
             return;
@@ -112,9 +122,9 @@ void MainWindow::slot_btn_start_search_click()
     bool isSimpleMode = ui->cbbSearchMode->currentIndex() == 0;
 
 #ifdef Q_OS_LINUX
-    mLinuxPacker.pack(ui->tbRootDir->text().trimmed(), isWidget, isSimpleMode);
+    mLinuxPacker.pack(rootPath, isWidget, isSimpleMode);
 #elif defined Q_OS_WINDOWS
-    mWindowsPacker.pack(ui->tbRootDir->text().trimmed(), isWidget, isSimpleMode, ui->tbSourceDir->text().trimmed());
+    mWindowsPacker.pack(rootPath, isWidget, isSimpleMode, ui->tbSourceDir->text().trimmed());
 #endif
 }
 
