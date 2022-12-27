@@ -60,8 +60,6 @@ void MainWindow::init()
     ui->cbbClientType->addItem("Qt Quick");
     ui->cbbClientType->setView(new QListView());
     ui->cbbClientType->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
-
-    ui->tbRootDir->setText("/home/mtr1994/Desktop/Demo/DemoMySQL");
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)

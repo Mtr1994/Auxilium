@@ -111,10 +111,13 @@ void LinuxPacker::threadPack(const QString &path)
 
     if (!collectQtDependsFlag)
     {
-        emit AppSignal::getInstance()->sgl_system_logger_message("基础打包未完成，流程继续", "#fc9153");
+        emit AppSignal::getInstance()->sgl_system_logger_message("基础打包未完成，继续查找其他依赖", "#fc9153");
 
         std::lock_guard<std::mutex> lock(mMutex);
         mThreadPacking = false;
+
+        // 此处应该报错返回
+        // return;
     }
 
     // 运行 Visual 2019 (或其他版本) dumpbin 程序，没有就提示找不到
