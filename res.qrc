@@ -1,12 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>Resource/icon/icon.ico</file>
-        <file>Resource/qss/style.qss</file>
+        <file>Resource/qss/style_windows.qss</file>
         <file>Resource/image/combobox_down.png</file>
         <file>Resource/image/setting.svg</file>
         <file>Resource/icon/logo.png</file>
         <file>Resource/image/add.svg</file>
         <file>Resource/image/move.svg</file>
         <file>Resource/image/monster.png</file>
+        <file>Resource/qss/style_linux.qss</file>
     </qresource>
 </RCC>

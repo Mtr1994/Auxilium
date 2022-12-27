@@ -10,7 +10,7 @@ class LinuxPacker : public QObject
 public:
     explicit LinuxPacker(QObject *parent = nullptr);
 
-    void pack(const QString &path, bool isWidget, bool isSimpleMode);
+    void pack(const QString &path, bool isWidget, bool isSimpleMode, const QString &sourceroot);
 
 private:
     void threadPack(const QString &path);
@@ -28,6 +28,8 @@ private:
     // 程序类型
     bool mIsQtWidgetType = true;
 
+    // 源码根目录
+    QString mSourceRoot;
 };
 
 #endif // LINUXPACKER_H

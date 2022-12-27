@@ -54,6 +54,7 @@ void WindowsPacker::pack(const QString &path, bool isWidget, bool isSimpleMode, 
 
 void WindowsPacker::threadPack(const QString &path)
 {
+#ifdef Q_OS_WINDOWS
     // 文件详细信息
     QFileInfo fileInfo(path);
 
@@ -99,7 +100,7 @@ void WindowsPacker::threadPack(const QString &path)
     // qmlimport 是 qml 系统模块的主目录
     fp = _popen(QString("windeployqt %1 %2").arg(
                     fileInfo.absoluteFilePath(),
-                    QString(mIsQtWidgetType ? " " : ("--qmldir " + mSourceRoot.toUtf8() + " --qmlimport " + qmlDir))).toStdString().data(), "r");
+                    QString(mIsQtWidgetType ? " " : ("--qmldir " + mSourceRoot + " --qmlimport " + qmlDir))).toStdString().data(), "r");
     if(fp)
     {
         size_t ret = fread(buf, 1, sizeof(buf) - 1, fp);
@@ -270,4 +271,7 @@ void WindowsPacker::threadPack(const QString &path)
 
     std::lock_guard<std::mutex> lock(mMutex);
     mThreadPacking = false;
+#elif defined Q_OS_LINUX
+    Q_UNUSED(path);
+#endif
 }

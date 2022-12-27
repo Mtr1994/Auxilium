@@ -12,7 +12,11 @@ int main(int argc, char *argv[])
     AppConfig::getInstance()->init();
 
     // 加载样式
-    qApp->setStyleSheet("file:///:/Resource/qss/style.qss");
+#ifdef Q_OS_LINUX
+    qApp->setStyleSheet("file:///:/Resource/qss/style_linux.qss");
+#elif defined Q_OS_WINDOWS
+    qApp->setStyleSheet("file:///:/Resource/qss/style_windows.qss");
+#endif
 
     MainWindow w;
     w.show();

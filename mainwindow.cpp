@@ -60,6 +60,8 @@ void MainWindow::init()
     ui->cbbClientType->addItem("Qt Quick");
     ui->cbbClientType->setView(new QListView());
     ui->cbbClientType->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
+
+    ui->tbRootDir->setText("/home/mtr1994/Desktop/Demo/DemoMySQL");
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -110,9 +112,10 @@ void MainWindow::slot_btn_start_search_click()
     bool isWidget = ui->cbbClientType->currentIndex() == 0;
 
     // qml 程序需要确认 源码位置是否存在
+    QString sourceRootPath = ui->tbSourceDir->text().trimmed();
     if (!isWidget)
     {
-        if (rootPath.isEmpty() || !QDir(rootPath).exists())
+        if (sourceRootPath.isEmpty() || !QDir(sourceRootPath).exists())
         {
             emit AppSignal::getInstance()->sgl_system_logger_message("请选择有效的项目源码路径", "#fc9153");
             return;
@@ -122,16 +125,20 @@ void MainWindow::slot_btn_start_search_click()
     bool isSimpleMode = ui->cbbSearchMode->currentIndex() == 0;
 
 #ifdef Q_OS_LINUX
-    mLinuxPacker.pack(rootPath, isWidget, isSimpleMode);
+    mLinuxPacker.pack(rootPath, isWidget, isSimpleMode, sourceRootPath);
 #elif defined Q_OS_WINDOWS
-    mWindowsPacker.pack(rootPath, isWidget, isSimpleMode, ui->tbSourceDir->text().trimmed());
+    mWindowsPacker.pack(rootPath, isWidget, isSimpleMode, sourceRootPath);
 #endif
 }
 
 void MainWindow::slot_btn_select_exec_click()
 {
     QString desk = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+#ifdef Q_OS_LINUX
+    QString path = QFileDialog::getOpenFileName(this, tr("选择可执行文件"), desk, "可执行文件 (*)");
+#elif defined Q_OS_WINDOWS
     QString path = QFileDialog::getOpenFileName(this, tr("选择可执行文件"), desk, "可执行文件 (*.exe)");
+#endif
     if (path.isEmpty()) return;
 
     ui->tbRootDir->setText(path);
