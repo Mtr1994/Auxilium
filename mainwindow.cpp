@@ -128,7 +128,7 @@ void MainWindow::slot_btn_start_search_click()
     int packMode = ui->cbbSearchMode->currentData().toInt();
 
 #ifdef Q_OS_LINUX
-    mLinuxPacker.pack(rootPath, isWidget, isSimpleMode, sourceRootPath);
+    mLinuxPacker.pack(rootPath, isWidget, packMode, sourceRootPath);
 #elif defined Q_OS_WINDOWS
     mWindowsPacker.pack(rootPath, isWidget, packMode, sourceRootPath);
 #endif

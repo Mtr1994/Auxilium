@@ -19,7 +19,7 @@ LinuxPacker::LinuxPacker(QObject *parent)
 
 }
 
-void LinuxPacker::pack(const QString &path, bool isWidget, bool isSimpleMode, const QString &sourceroot)
+void LinuxPacker::pack(const QString &path, bool isWidget, int mode, const QString &sourceroot)
 {
     if (mThreadPacking)
     {
@@ -36,7 +36,7 @@ void LinuxPacker::pack(const QString &path, bool isWidget, bool isSimpleMode, co
     std::lock_guard<std::mutex> lock(mMutex);
     mThreadPacking= true;
 
-    mIsSimpleMode = isSimpleMode;
+    mPackMode = mode;
     mIsQtWidgetType = isWidget;
     mSourceRoot = sourceroot;
 
@@ -180,11 +180,12 @@ void LinuxPacker::threadPack(const QString &path)
     findDepends(fileInfo.absoluteFilePath());
 
     // 非简洁模式，进行循环查找
-    if (!mIsSimpleMode)
+    if (mPackMode != 1)
     {
         // 后续循环查询
         int32_t index = 0;
-        while (index < listDepends.size())
+        int currentSize = listDepends.size();
+        while (index < ((mPackMode == 0) ? listDepends.size() : currentSize))
         {
             QString item = listDepends.at(index);
             emit AppSignal::getInstance()->sgl_system_logger_message(QString("正在查询 %1 的所有依赖").arg(item), "#fc9153");
