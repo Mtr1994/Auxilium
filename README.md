@@ -4,7 +4,7 @@
 ![Qt Version](https://img.shields.io/badge/_Qt_5.15.2-yellowgreen)
 ![Build](https://img.shields.io/badge/build-MSVC_2019_x64-blue)
 
-### 一、简介
+#### 一、简介
 
 `Auxilium` 程序用于打包 `QWidget` 程序 和 `Quick` 程序。
 
@@ -14,7 +14,7 @@
 
 系统能正常工作于 `Windows` 系统和 `Linux` 系统。
 
-### 二、研发事件
+#### 二、开发日志
 
 ##### 2023 年01月20日
 
@@ -30,7 +30,7 @@
 
 
 
-### 三、安装包制作注意事项
+#### 三、安装包制作注意事项
 
 * 使用 `Inno Setup` 制作安装包的注意事项
 
