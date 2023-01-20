@@ -51,10 +51,15 @@ void MainWindow::init()
     // 改变项目类型时，根据情况现实或隐藏源码输入框
     connect(ui->cbbClientType, &QComboBox::currentTextChanged, this, &MainWindow::slot_current_type_change);
 
-    ui->cbbSearchMode->addItem("简洁模式");
-    ui->cbbSearchMode->addItem("循环模式");
+    // 简洁模式只获取一层依赖，标准模式获取两层依赖，循环模式获取所有依赖
+    ui->cbbSearchMode->addItem("简洁模式", 1);
+    ui->cbbSearchMode->addItem("标准模式", 2);
+    ui->cbbSearchMode->addItem("循环模式", 0);
     ui->cbbSearchMode->setView(new QListView());
     ui->cbbSearchMode->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
+
+    // 默认标准模式
+    ui->cbbSearchMode->setCurrentIndex(1);
 
     ui->cbbClientType->addItem("Qt Widget");
     ui->cbbClientType->addItem("Qt Quick");
@@ -120,12 +125,12 @@ void MainWindow::slot_btn_start_search_click()
         }
     }
 
-    bool isSimpleMode = ui->cbbSearchMode->currentIndex() == 0;
+    int packMode = ui->cbbSearchMode->currentData().toInt();
 
 #ifdef Q_OS_LINUX
     mLinuxPacker.pack(rootPath, isWidget, isSimpleMode, sourceRootPath);
 #elif defined Q_OS_WINDOWS
-    mWindowsPacker.pack(rootPath, isWidget, isSimpleMode, sourceRootPath);
+    mWindowsPacker.pack(rootPath, isWidget, packMode, sourceRootPath);
 #endif
 }
 

@@ -393,6 +393,7 @@ QLabel#lbTitle
 QLabel#lbMonster
 {
     image: url(:/Resource/image/monster.png);
+    min-height: 10em;
 }
 
 /* QScrollBar */
