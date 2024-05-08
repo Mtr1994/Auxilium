@@ -73,9 +73,14 @@ void LinuxPacker::threadPack(const QString &path)
             size_t ret = fread(buf, 1, sizeof(buf) - 1, fp);
             if(ret > 0)
             {
+                #if QT_VERSION <= 0x050000
                 QTextCodec *codec = QTextCodec::codecForName("GBK");
                 QString message = QString::fromUtf8(codec->toUnicode(QByteArray(buf)).toUtf8());
                 qmlDir = QFileInfo(message.remove("\n")).absolutePath() + "/../qml";
+                #else
+                QString message = QByteArray(buf);
+                qmlDir = QFileInfo(message.remove("\n")).absolutePath() + "/../qml";
+                #endif
             }
             else
             {
@@ -144,9 +149,14 @@ void LinuxPacker::threadPack(const QString &path)
             size_t ret = fread(buffer, 1, length - 1, fp);
             if(ret > 0)
             {
+                #if QT_VERSION <= 0x050000
                 QTextCodec *codec = QTextCodec::codecForName("GBK");
                 QString message = QString::fromUtf8(codec->toUnicode(QByteArray(buffer)).toUtf8());
                 QStringList tempList = message.remove("\n").split("\t", Qt::SkipEmptyParts);
+                #else
+                QString message = QByteArray(buffer);
+                QStringList tempList = message.remove("\n").split("\t", Qt::SkipEmptyParts);
+                #endif
 
                 QStringList listSo;
                 for (auto &tempSo : tempList)
