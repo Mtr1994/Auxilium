@@ -12,6 +12,8 @@ public:
 
     void pack(const QString &path, bool isWidget, int mode, const QString &sourceroot);
 
+    bool getFileInfoString(const QString &fileName, const QString &name, QString &value);
+
 private:
     void threadPack(const QString &path);
 

@@ -1,10 +1,4 @@
-﻿QMainWindow#MainWindow
-{
-    min-width: 68em;
-    min-height: 42em;
-}
-
-QWidget
+﻿QWidget
 {
     font: 9pt "Microsoft Yahei";
     outline: none;
@@ -447,10 +441,10 @@ QLabel[PrefixTitle]
 /* QMenu */
 QMenu
 {
-    min-height: 8.4em;
+    min-height: 7.2em;
     background-color: #fefefe;
     border: 1px solid #dcdfe6;
-    border-radius: 0.3em;
+    border-radius: 0.2em;
 }
 
 QMenu::item
@@ -458,9 +452,10 @@ QMenu::item
     color: #333333;
     background-color: transparent;
     padding-left: 1em;
-    margin: 0.3em 1px;
-    min-width: 10em;
-    min-height: 2.4em;
+    margin: 0.2em;
+    border-radius: 0.2em;
+    min-width: 7.2em;
+    min-height: 1.8em;
 }
 
 QMenu::item:selected  {

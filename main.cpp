@@ -2,7 +2,8 @@
 #include "Public/appconfig.h"
 
 #include <QApplication>
-#include <QScreen>
+#include <QFont>
+#include <QFontMetricsF>
 
 int main(int argc, char *argv[])
 {
@@ -10,6 +11,10 @@ int main(int argc, char *argv[])
 
     // 初始化配置文件
     AppConfig::getInstance()->init();
+
+    // 写入基础尺寸
+    float pointSize = QFontMetricsF(QFont("Microsoft Yahei", 9)).averageCharWidth();
+    AppConfig::getInstance()->setValue("PointSize", "value", QString::number(pointSize * 2, 'f', 2));
 
     // 加载样式
 #ifdef Q_OS_LINUX
@@ -20,10 +25,6 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
-
-    // 处理因为 QSS 设置主窗口大小导致的程序默认不居中的问题
-    QSize screenSize = a.primaryScreen()->availableSize();
-    w.move((screenSize.width() - w.width()) / 2, (screenSize.height() - w.height()) / 2);
 
     return a.exec();
 }

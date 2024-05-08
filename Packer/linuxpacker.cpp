@@ -7,6 +7,7 @@
 #include <thread>
 #include <QTextCodec>
 #include <QDir>
+#include <fstream>
 
 // test
 #include <QDebug>
@@ -91,7 +92,7 @@ void LinuxPacker::threadPack(const QString &path)
     // qmlimport 是 qml 系统模块的主目录
     fp = popen(QString("linuxdeployqt %1 %2 -appimage").arg(
                     fileInfo.absoluteFilePath(),
-                    QString(mIsQtWidgetType ? " " : ("--qmldir " + mSourceRoot + " --qmlimport " + qmlDir))).toStdString().data(), "r");
+                    QString(mIsQtWidgetType ? " " : ("--qmldir " + mSourceRoot + " --qmlimport " + qmlDir))).toLocal8Bit().toStdString().data(), "r");
     if(fp)
     {
         size_t ret = fread(buf, 1, sizeof(buf) - 1, fp);
@@ -128,12 +129,14 @@ void LinuxPacker::threadPack(const QString &path)
     QStringList listDepends;
     QStringList listDependsLoss;
 
-    auto findDepends = [&listDepends, &buffer, &length] (const QString &item)
+    auto findDepends = [&listDepends, &buffer, &length, this] (const QString &item)
     {
         FILE *fp = nullptr;
         memset(buffer, 0, length);
 
-        fp = popen(QString("ldd %1").arg(item).toStdString().data(), "r");
+        QString path = item;
+        if (item.contains(" ")) path = QString("\"%1\"").arg(item);
+        fp = popen(QString("ldd %1").arg(path).toLocal8Bit(), "r");
         if(fp)
         {
             size_t ret = fread(buffer, 1, length - 1, fp);
@@ -162,6 +165,12 @@ void LinuxPacker::threadPack(const QString &path)
                 for (auto &depend : listSo)
                 {
                     if (listDepends.contains(depend)) continue;
+
+                    if (mPackMode == 1)
+                    {
+                        // 此处可能需要判断 该 库是否是系统自带，然后跳过
+                    }
+
                     emit AppSignal::getInstance()->sgl_system_logger_message(QString("找到一个系统依赖库 %1 文件  【序号： %2】").arg(depend.split("/").last(), QString::number(listDepends.size())), "#3f8f54");
                     listDepends.append(depend);
                 }
@@ -179,24 +188,22 @@ void LinuxPacker::threadPack(const QString &path)
     // 查询顶层
     findDepends(fileInfo.absoluteFilePath());
 
-    // 非简洁模式，进行循环查找
-    if (mPackMode != 1)
+    // 循环查询
+    int32_t index = 0;
+    while (index < listDepends.size())
     {
-        // 后续循环查询
-        int32_t index = 0;
-        int currentSize = listDepends.size();
-        while (index < ((mPackMode == 0) ? listDepends.size() : currentSize))
-        {
-            QString item = listDepends.at(index);
-            emit AppSignal::getInstance()->sgl_system_logger_message(QString("正在查询 %1 的所有依赖").arg(item), "#fc9153");
-            findDepends(item);
-            index++;
-        }
+        QString item = listDepends.at(index);
+        emit AppSignal::getInstance()->sgl_system_logger_message(QString("开始查询 %1 的所有依赖").arg(item), "#fc9153");
+        findDepends(item);
+        index++;
     }
 
     delete [] buffer;
 
     emit AppSignal::getInstance()->sgl_system_logger_message(QString("当前已经尽可能的确定所有依赖库位置，准备开始拷贝共 %1 个动态库文件").arg(QString::number(listDepends.size())), "#3f8f54");
+
+    // 拷贝结果保存
+    QStringList listCopyMessage;
 
     // 此处开始文件拷贝
     int64_t size = listDepends.size();
@@ -210,11 +217,15 @@ void LinuxPacker::threadPack(const QString &path)
         {
             ignoreNumber++;
             emit AppSignal::getInstance()->sgl_system_logger_message(QString("文件 %1 已经存在, 跳过复制").arg(info.fileName()), "#fc9153");
+
+            listCopyMessage.append(QString("%1 已存在，跳过").arg(info.absoluteFilePath()));
             continue;
         }
 
         bool status = QFile::copy(listDepends.at(i), QString("%1/%2").arg(fileInfo.absolutePath(), info.fileName()));
         emit AppSignal::getInstance()->sgl_system_logger_message(QString("文件 %1 拷贝 %2").arg(info.fileName(), status ? "成功" : "失败"), status ? "#3f8f54" : "dd3737");
+
+        listCopyMessage.append(QString("%1 %2").arg(info.absoluteFilePath(), status ? "成功" : "失败"));
     }
     // 此处文件拷贝结束
 
@@ -222,6 +233,16 @@ void LinuxPacker::threadPack(const QString &path)
                                                                  QString::number(listDepends.size()),
                                                                  QString::number(ignoreNumber),
                                                                  QString::number(listDependsLoss.size())), "#3f8f54");
+
+    // 拷贝过程文件记录
+    std::ofstream fileDescripter;
+    fileDescripter.open("copylogs.txt");
+
+    if (fileDescripter.is_open())
+    {
+        QString content = listCopyMessage.join("\n");
+        fileDescripter << content.toStdString().data() << std::endl;
+    }
 
     std::lock_guard<std::mutex> lock(mMutex);
     mThreadPacking = false;

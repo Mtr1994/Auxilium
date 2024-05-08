@@ -5,6 +5,9 @@
 *.a
 *.la
 *.lai
+*.so
+*.so.*
+*.dll
 *.dylib
 
 # Qt-es
@@ -26,9 +29,9 @@ ui_*.h
 *.jsc
 Makefile*
 *build-*
-*bin*
 *.qm
 *.prl
+Output
 
 # Qt unit tests
 target_wrapper.*
@@ -48,3 +51,5 @@ compile_commands.json
 
 # QtCreator local machine specific files for imported projects
 *creator.user*
+
+*_qmlcache.qrc

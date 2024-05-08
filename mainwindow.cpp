@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "Public/appsignal.h"
 #include "Dialog/dialogsetting.h"
+#include "Public/appconfig.h"
 
 #include <QDir>
 #include <QDateTime>
@@ -9,6 +10,7 @@
 #include <QStandardPaths>
 #include <QListView>
 #include <regex>
+#include <QScreen>
 
 // test
 #include <QDebug>
@@ -31,6 +33,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
+    float pointSize = AppConfig::getInstance()->getValue("PointSize", "value").toFloat();
+    setMinimumSize(pointSize * 100, pointSize * 100 * 0.618);
+
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
 
@@ -51,10 +56,9 @@ void MainWindow::init()
     // 改变项目类型时，根据情况现实或隐藏源码输入框
     connect(ui->cbbClientType, &QComboBox::currentTextChanged, this, &MainWindow::slot_current_type_change);
 
-    // 简洁模式只获取一层依赖，标准模式获取两层依赖，循环模式获取所有依赖
-    ui->cbbSearchMode->addItem("简洁模式", 1);
-    ui->cbbSearchMode->addItem("标准模式", 2);
-    ui->cbbSearchMode->addItem("循环模式", 0);
+    // 标准模式 循环查找所有库，但是不要系统库，盲目模式也是循环查找，但是附带系统库
+    ui->cbbSearchMode->addItem("盲目模式", 0);
+    ui->cbbSearchMode->addItem("标准模式", 1);
     ui->cbbSearchMode->setView(new QListView());
     ui->cbbSearchMode->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
 

@@ -4,7 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
-lessThan(QT_MAJOR_VERSION, 6): win32: QMAKE_CXXFLAGS += -execution-charset:utf-8
+lessThan(QT_MAJOR_VERSION, 6): win32: QMAKE_CXXFLAGS += -execution-charset:utf-8 QT += core5compat
 
 # make the application have authority of running on Ubuntu, and I do not know why it works
 unix: QMAKE_LFLAGS += -no-pie
@@ -31,8 +31,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 TARGET = Auxilium
-
-DESTDIR = ../bin
 
 SOURCES += \
     Dialog/dialogsetting.cpp \

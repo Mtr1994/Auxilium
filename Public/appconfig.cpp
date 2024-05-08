@@ -17,7 +17,7 @@ void AppConfig::init()
     }
 
     mSetting = new QSettings("conf.ini", QSettings::IniFormat);
-    mSetting->setIniCodec(QTextCodec::codecForName("utf-8"));
+    //mSetting->setIniCodec(QTextCodec::codecForName("utf-8"));
 }
 
 AppConfig *AppConfig::getInstance()
