@@ -5,7 +5,9 @@
 #include <QFile>
 #include <QFileInfo>
 #include <thread>
+#if QT_VERSION <= 0x050000
 #include <QTextCodec>
+#endif
 #include <QDir>
 #include <fstream>
 

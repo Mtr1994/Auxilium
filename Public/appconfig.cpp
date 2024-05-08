@@ -1,6 +1,9 @@
 ﻿#include "appconfig.h"
 
+#if QT_VERSION <= 0x050000
 #include <QTextCodec>
+#endif
+
 #include <QFile>
 
 AppConfig::AppConfig(QObject *parent) : QObject(parent)
@@ -17,7 +20,9 @@ void AppConfig::init()
     }
 
     mSetting = new QSettings("conf.ini", QSettings::IniFormat);
-    //mSetting->setIniCodec(QTextCodec::codecForName("utf-8"));
+    #if QT_VERSION <= 0x050000
+    mSetting->setIniCodec(QTextCodec::codecForName("utf-8"));
+    #endif
 }
 
 AppConfig *AppConfig::getInstance()
