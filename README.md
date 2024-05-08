@@ -71,4 +71,4 @@
 
 #### 四、功能展示
 
-​	![](Resource\image\help\p1.png)
+​	![](Resource/image/help/p1.png)
