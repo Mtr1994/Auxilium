@@ -57,7 +57,7 @@ void MainWindow::init()
     connect(ui->cbbClientType, &QComboBox::currentTextChanged, this, &MainWindow::slot_current_type_change);
 
     // 标准模式 循环查找所有库，但是不要系统库，盲目模式也是循环查找，但是附带系统库
-    ui->cbbSearchMode->addItem("盲目模式", 0);
+    ui->cbbSearchMode->addItem("贪婪模式", 0);
     ui->cbbSearchMode->addItem("标准模式", 1);
     ui->cbbSearchMode->setView(new QListView());
     ui->cbbSearchMode->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
