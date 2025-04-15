@@ -59,16 +59,12 @@ void MainWindow::init()
     // 标准模式 循环查找所有库，但是不要系统库，盲目模式也是循环查找，但是附带系统库
     ui->cbbSearchMode->addItem("贪婪模式", 0);
     ui->cbbSearchMode->addItem("标准模式", 1);
-    ui->cbbSearchMode->setView(new QListView());
-    ui->cbbSearchMode->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
 
     // 默认标准模式
     ui->cbbSearchMode->setCurrentIndex(1);
 
     ui->cbbClientType->addItem("Qt Widget");
     ui->cbbClientType->addItem("Qt Quick");
-    ui->cbbClientType->setView(new QListView());
-    ui->cbbClientType->view()->parentWidget()->setWindowFlag(Qt::NoDropShadowWindowHint);
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
@@ -77,7 +73,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
             || event->pos().y() > ui->widgetTitle->height() + layout()->contentsMargins().top() + ui->widgetTitle->y()) return;
     if (event->button() == Qt::LeftButton)
     {
-        mLastMousePosition = event->globalPos();
+        mLastMousePosition = event->globalPosition();
         mMousePressed = true;
     }
 }
@@ -92,9 +88,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if (!mMousePressed) return;
     if (!event->buttons().testFlag(Qt::LeftButton)) return;
-    const QPointF position = pos() + event->globalPos() - mLastMousePosition; //the position of mainfrmae + (current_mouse_position - last_mouse_position)
+    const QPointF position = pos() + event->globalPosition() - mLastMousePosition; //the position of mainfrmae + (current_mouse_position - last_mouse_position)
     move(position.x(), position.y());
-    mLastMousePosition = event->globalPos();
+    mLastMousePosition = event->globalPosition();
 }
 
 void MainWindow::slot_btn_start_search_click()

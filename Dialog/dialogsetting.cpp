@@ -67,7 +67,7 @@ void DialogSetting::mousePressEvent(QMouseEvent *event)
             || event->pos().y() > ui->widgetSettingTitle->height() + this->layout()->contentsMargins().top() + ui->widgetSettingTitle->y()) return;
     if (event->button() == Qt::LeftButton)
     {
-        mLastMousePosition = event->globalPos();
+        mLastMousePosition = event->globalPosition();
         mMousePressed = true;
     }
 }
@@ -82,9 +82,9 @@ void DialogSetting::mouseMoveEvent(QMouseEvent *event)
 {
     if (!mMousePressed) return;
     if (!event->buttons().testFlag(Qt::LeftButton)) return;
-    const QPointF position = pos() + event->globalPos() - mLastMousePosition;
+    const QPointF position = pos() + event->globalPosition() - mLastMousePosition;
     move(position.x(), position.y());
-    mLastMousePosition = event->globalPos();
+    mLastMousePosition = event->globalPosition();
 }
 
 void DialogSetting::slot_btn_cancel_click()

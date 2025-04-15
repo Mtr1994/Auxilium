@@ -17,7 +17,7 @@ QWidget[Background="true"]
 QWidget#widgetBase
 {
     border: none;
-    border-radius: 0.3em;
+    border-radius: 4px;
     background-color: transparent;
 }
 
@@ -25,7 +25,7 @@ QWidget#widgetLeftBase
 {
     background-color: #295e9f;
     border: none;
-    border-radius: 0.3em;
+    border-radius: 4px;
     min-width: 12em;
     max-width: 12em;
     border-top-right-radius: 0px;
@@ -76,7 +76,7 @@ QWidget#widgetSettingTitle
 QWidget#widgetContent,#widgetSearch
 {
     background-color: #fefefe;
-    border-radius: 0.3em;
+    border-radius: 4px;
 }
 
 QWidget#widgetClientType,#widgetSearchModeBase,#widgetTargetBase,#widgetSourceBase
@@ -84,7 +84,7 @@ QWidget#widgetClientType,#widgetSearchModeBase,#widgetTargetBase,#widgetSourceBa
     min-width: 9.6em;
     background-color: #fefefe;
     border: 1px solid #dcdfe6;
-    border-radius: 0.3em;
+    border-radius: 4px;
 }
 
 QWidget#widgetSettingBase
@@ -94,7 +94,7 @@ QWidget#widgetSettingBase
 
 QWidget#widgetViewBase
 {
-    border-radius: 0.3em;
+    border-radius: 4px;
 }
 
 /* QPushButton */
@@ -102,7 +102,7 @@ QPushButton[Ok="true"]
 {
     min-width: 1.6em;
     min-height: 1.8em;
-    border-radius: 0.2em;
+    border-radius: 4px;
     padding-left: 1em;
     padding-right: 1em;
     color: #fefefe;
@@ -128,9 +128,9 @@ QPushButton[Cancel="true"]
 {
     min-width: 1.6em;
     min-height: 1.8em;
-    border-radius: 0.2em;
+    border-radius: 4px;
     border: 1px solid #dcdfe6;
-    border-radius: 0.2em;
+    border-radius: 4px;
     padding-left: 1em;
     padding-right: 1em;
     color: #666666;
@@ -173,7 +173,7 @@ QPushButton#btnSystemSet
     max-height: 1.6em;
     background-color: transparent;
     padding: 0.3em;
-    border-radius: 0.3em;
+    border-radius: 4px;
     color: #fefefe;
     image: url(:/Resource/image/setting.svg);
 }
@@ -196,7 +196,7 @@ QPushButton[SmallToolButton]
     max-height: 1.2em;
     background-color: transparent;
     padding: 0.3em;
-    border-radius: 0.2em;
+    border-radius: 4px;
     color: #fefefe;
 }
 
@@ -224,7 +224,7 @@ QLineEdit#tbRootDir,#tbSourceDir
     border-left: 1px solid #dcdfe6;
     padding-left: 0.64em;
     margin-right: 1em;
-    border-radius: 0.3em;
+    border-radius: 4px;
     border-top-left-radius: 0em;
     border-bottom-left-radius: 0em;
     color: #3f8f54;
@@ -261,7 +261,7 @@ QCheckBox::indicator:checked
 QListView
 {
     border: 1px solid #dcdfe6;
-    border-radius: 0.3em;
+    border-radius: 4px;
     padding: 0.3em;
 }
 
@@ -271,7 +271,7 @@ QListView::item
     min-height: 1.8em;
     color: #666666;
     padding-left: 0.3em;
-    border-radius: 0.3em;
+    border-radius: 4px;
 }
 
 QListView#lvTargetPath::item
@@ -293,10 +293,10 @@ QListView::item:selected
 /* QComboBox */
 QComboBox
 {
-    min-width: 5.0em;
-    min-height: 1.8em;
+    min-width: 6em;
+    padding: 6px 12px;
     border: 1px solid #dcdfe6;
-    border-radius: 0.3em;
+    border-radius: 4px;
     border-top-left-radius: 0em;
     border-bottom-left-radius: 0em;
     padding-left: 0.3em;
@@ -307,8 +307,9 @@ QComboBox QAbstractItemView
 {
     outline: none;
     padding-top: 0.3em;
+    margin-top: 4px;
     border: 1px solid #d0d0d0;
-    border-radius: 0.3em;
+    border-radius: 0px;
     padding-bottom: 0.3em;
     background-color: #fefefe;
 }
@@ -330,9 +331,9 @@ QComboBox::down-arrow
 
 QComboBox QAbstractItemView::item
 {
-    padding-top: 0.3em;
-    padding-bottom: 0.3em;
-    border-radius: 0.2em;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    border-radius: 4px;
     padding-left: 0.5em;
 }
 
@@ -352,7 +353,7 @@ QComboBox QAbstractItemView::item:selected
 QTextBrowser#tbLogs
 {
     border: 1px solid #d0d0d0;
-    border-radius: 0.3em;
+    border-radius: 4px;
     padding: 0.5em;
     color: #444444;
     font: 9pt "Microsoft Yahei";
@@ -368,7 +369,7 @@ QLabel#lbLogo
     max-height: 6em;
     padding: 1em 1em;
     image: url(:/Resource/icon/logo.png);
-    border-radius: 0.3em;
+    border-radius: 4px;
     margin-top: 9px;
 }
 
@@ -395,7 +396,7 @@ QScrollBar::vertical
 {
     background-color: #d0d0d0;
     border: 1px solid #d0d0d0;
-    border-radius: 0.2em;
+    border-radius: 4px;
     margin:0px,0px,0px,0px;
     width: 0.4em;
 }
@@ -404,7 +405,7 @@ QScrollBar::handle:vertical
 {
     background-color: #fc9153;
     border: none;
-    border-radius: 0.2em;
+    border-radius: 4px;
     min-height: 3em;
     width: 0.4em;
 }
@@ -444,7 +445,7 @@ QMenu
     min-height: 7.2em;
     background-color: #fefefe;
     border: 1px solid #dcdfe6;
-    border-radius: 0.2em;
+    border-radius: 4px;
 }
 
 QMenu::item
@@ -453,7 +454,7 @@ QMenu::item
     background-color: transparent;
     padding-left: 1em;
     margin: 0.2em;
-    border-radius: 0.2em;
+    border-radius: 4px;
     min-width: 7.2em;
     min-height: 1.8em;
 }
